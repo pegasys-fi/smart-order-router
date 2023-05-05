@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Protocol } from '@uniswap/router-sdk';
-import { TradeType } from '@uniswap/sdk-core';
+import { Protocol } from '@pollum-io/router-sdk';
+import { TradeType } from '@pollum-io/sdk-core';
 import JSBI from 'jsbi';
 import _ from 'lodash';
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap';
@@ -346,7 +346,7 @@ export async function getBestSwapRouteBy(
 
           if (HAS_L1_FEE.includes(chainId)) {
             const onlyV3Routes = curRoutesNew.every(
-              (route) => route.protocol == Protocol.V3
+              (route) => route.protocol == Protocol.V2
             );
 
             if (gasModel == undefined || !onlyV3Routes) {
@@ -443,7 +443,7 @@ export async function getBestSwapRouteBy(
   if (HAS_L1_FEE.includes(chainId)) {
     // ensure the gasModel exists and that the swap route is a v3 only route
     const onlyV3Routes = bestSwap.every(
-      (route) => route.protocol == Protocol.V3
+      (route) => route.protocol == Protocol.V2
     );
     if (gasModel == undefined || !onlyV3Routes) {
       throw new Error('Can\'t compute L1 gas fees.');

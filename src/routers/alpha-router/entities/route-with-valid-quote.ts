@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Protocol } from '@uniswap/router-sdk';
-import { Token, TradeType } from '@uniswap/sdk-core';
-import { Pool } from '@uniswap/v3-sdk';
+import { Protocol } from '@pollum-io/router-sdk';
+import { Token, TradeType } from '@pollum-io/sdk-core';
+import { Pool } from '@pollum-io/v2-sdk';
 import _ from 'lodash';
 
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
@@ -39,11 +39,11 @@ export interface IRouteWithValidQuote<
 
 // Discriminated unions on protocol field to narrow types.
 export type IV2RouteWithValidQuote = {
-  protocol: Protocol.V2;
+  protocol: Protocol.V1;
 } & IRouteWithValidQuote<V2Route>;
 
 export type IV3RouteWithValidQuote = {
-  protocol: Protocol.V3;
+  protocol: Protocol.V2;
 } & IRouteWithValidQuote<V3Route>;
 
 export type IMixedRouteWithValidQuote = {
@@ -74,7 +74,7 @@ export type V2RouteWithValidQuoteParams = {
  * @class V2RouteWithValidQuote
  */
 export class V2RouteWithValidQuote implements IV2RouteWithValidQuote {
-  public readonly protocol = Protocol.V2;
+  public readonly protocol = Protocol.V1;
   public amount: CurrencyAmount;
   // The BigNumber representing the quote.
   public rawQuote: BigNumber;
@@ -166,7 +166,7 @@ export type V3RouteWithValidQuoteParams = {
  * @class V3RouteWithValidQuote
  */
 export class V3RouteWithValidQuote implements IV3RouteWithValidQuote {
-  public readonly protocol = Protocol.V3;
+  public readonly protocol = Protocol.V2;
   public amount: CurrencyAmount;
   public rawQuote: BigNumber;
   public quote: CurrencyAmount;

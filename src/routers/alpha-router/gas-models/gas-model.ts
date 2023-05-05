@@ -1,46 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Token } from '@uniswap/sdk-core';
+import { Token } from '@pollum-io/sdk-core';
 
 import {
-  CUSD_CELO,
-  CUSD_CELO_ALFAJORES,
-  DAI_ARBITRUM,
-  DAI_ARBITRUM_RINKEBY,
-  DAI_BSC,
-  DAI_GÖRLI,
-  DAI_KOVAN,
-  DAI_MAINNET,
-  DAI_OPTIMISM,
-  DAI_OPTIMISM_GOERLI,
-  DAI_OPTIMISTIC_KOVAN,
-  DAI_POLYGON_MUMBAI,
-  DAI_RINKEBY_1,
-  DAI_RINKEBY_2,
-  DAI_ROPSTEN,
-  USDC_ARBITRUM,
-  USDC_ARBITRUM_GOERLI,
-  USDC_BSC,
-  USDC_ETHEREUM_GNOSIS,
-  USDC_GÖRLI,
-  USDC_KOVAN,
-  USDC_MAINNET,
-  USDC_MOONBEAM,
-  USDC_OPTIMISM,
-  USDC_OPTIMISM_GOERLI,
-  USDC_OPTIMISTIC_KOVAN,
-  USDC_POLYGON,
-  USDC_ROPSTEN,
-  USDT_ARBITRUM,
-  USDT_ARBITRUM_RINKEBY,
-  USDT_BSC,
-  USDT_GÖRLI,
-  USDT_KOVAN,
-  USDT_MAINNET,
-  USDT_OPTIMISM,
-  USDT_OPTIMISM_GOERLI,
-  USDT_OPTIMISTIC_KOVAN,
-  USDT_ROPSTEN,
-  WBTC_GÖRLI,
+  DAI_ROLLUX,
+  USDC_ROLLUX,
+  USDT_ROLLUX,
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -59,32 +23,11 @@ import {
 } from '../entities/route-with-valid-quote';
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.MAINNET]: [DAI_MAINNET, USDC_MAINNET, USDT_MAINNET],
-  [ChainId.RINKEBY]: [DAI_RINKEBY_1, DAI_RINKEBY_2],
-  [ChainId.ARBITRUM_ONE]: [DAI_ARBITRUM, USDC_ARBITRUM, USDT_ARBITRUM],
-  [ChainId.OPTIMISM]: [DAI_OPTIMISM, USDC_OPTIMISM, USDT_OPTIMISM],
-  [ChainId.OPTIMISM_GOERLI]: [
-    DAI_OPTIMISM_GOERLI,
-    USDC_OPTIMISM_GOERLI,
-    USDT_OPTIMISM_GOERLI,
+  [ChainId.ROLLUX_TESTNET]: [
+    DAI_ROLLUX,
+    USDC_ROLLUX,
+    USDT_ROLLUX,
   ],
-  [ChainId.OPTIMISTIC_KOVAN]: [
-    DAI_OPTIMISTIC_KOVAN,
-    USDC_OPTIMISTIC_KOVAN,
-    USDT_OPTIMISTIC_KOVAN,
-  ],
-  [ChainId.ARBITRUM_RINKEBY]: [DAI_ARBITRUM_RINKEBY, USDT_ARBITRUM_RINKEBY],
-  [ChainId.ARBITRUM_GOERLI]: [USDC_ARBITRUM_GOERLI],
-  [ChainId.KOVAN]: [DAI_KOVAN, USDC_KOVAN, USDT_KOVAN],
-  [ChainId.GÖRLI]: [DAI_GÖRLI, USDC_GÖRLI, USDT_GÖRLI, WBTC_GÖRLI],
-  [ChainId.ROPSTEN]: [DAI_ROPSTEN, USDC_ROPSTEN, USDT_ROPSTEN],
-  [ChainId.POLYGON]: [USDC_POLYGON],
-  [ChainId.POLYGON_MUMBAI]: [DAI_POLYGON_MUMBAI],
-  [ChainId.CELO]: [CUSD_CELO],
-  [ChainId.CELO_ALFAJORES]: [CUSD_CELO_ALFAJORES],
-  [ChainId.GNOSIS]: [USDC_ETHEREUM_GNOSIS],
-  [ChainId.MOONBEAM]: [USDC_MOONBEAM],
-  [ChainId.BSC]: [USDT_BSC, USDC_BSC, DAI_BSC],
 };
 
 export type L1ToL2GasCosts = {
@@ -101,8 +44,8 @@ export type BuildOnChainGasModelFactoryType = {
   quoteToken: Token;
   v2poolProvider: IV2PoolProvider;
   l2GasDataProvider?:
-    | IL2GasDataProvider<OptimismGasData>
-    | IL2GasDataProvider<ArbitrumGasData>;
+  | IL2GasDataProvider<OptimismGasData>
+  | IL2GasDataProvider<ArbitrumGasData>;
 };
 
 export type BuildV2GasModelFactoryType = {
@@ -172,10 +115,10 @@ export abstract class IOnChainGasModelFactory {
   public abstract buildGasModel({
     chainId,
     gasPriceWei,
-    v3poolProvider: V3poolProvider,
+    v3poolProvider,
     amountToken,
     quoteToken,
-    v2poolProvider: V2poolProvider,
+    v2poolProvider,
     l2GasDataProvider,
   }: BuildOnChainGasModelFactoryType): Promise<
     IGasModel<V3RouteWithValidQuote | MixedRouteWithValidQuote>

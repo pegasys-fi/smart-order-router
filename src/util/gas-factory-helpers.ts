@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Protocol } from '@uniswap/router-sdk';
-import { Currency, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core';
-import { Pair } from '@uniswap/v2-sdk/dist/entities';
-import { FeeAmount, Pool } from '@uniswap/v3-sdk';
+import { Protocol } from '@pollum-io/router-sdk';
+import { Currency, CurrencyAmount, Token, TradeType } from '@pollum-io/sdk-core';
+import { Pair } from '@pollum-io/v1-sdk/dist/entities';
+import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
 import _ from 'lodash';
 
 import { IV2PoolProvider } from '../providers';
@@ -259,20 +259,7 @@ export async function calculateGasUsed(
   let l2toL1FeeInWei = BigNumber.from(0);
   if (
     [
-      ChainId.ARBITRUM_ONE,
-      ChainId.ARBITRUM_RINKEBY,
-      ChainId.ARBITRUM_GOERLI,
-    ].includes(chainId)
-  ) {
-    l2toL1FeeInWei = calculateArbitrumToL1FeeFromCalldata(
-      route.methodParameters!.calldata,
-      l2GasData as ArbitrumGasData
-    )[1];
-  } else if (
-    [
-      ChainId.OPTIMISM,
-      ChainId.OPTIMISTIC_KOVAN,
-      ChainId.OPTIMISM_GOERLI,
+      ChainId.ROLLUX_TESTNET,
     ].includes(chainId)
   ) {
     l2toL1FeeInWei = calculateOptimismToL1FeeFromCalldata(
@@ -352,7 +339,7 @@ export function initSwapRouteFromExisting(
     : TradeType.EXACT_INPUT;
   const routesWithValidQuote = swapRoute.route.map((route) => {
     switch (route.protocol) {
-      case Protocol.V3:
+      case Protocol.V2:
         return new V3RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
@@ -378,7 +365,7 @@ export function initSwapRouteFromExisting(
           tradeType: tradeType,
           v3PoolProvider: v3PoolProvider,
         });
-      case Protocol.V2:
+      case Protocol.V1:
         return new V2RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
@@ -446,10 +433,10 @@ export function initSwapRouteFromExisting(
     blockNumber: BigNumber.from(swapRoute.blockNumber),
     methodParameters: swapRoute.methodParameters
       ? ({
-          calldata: swapRoute.methodParameters.calldata,
-          value: swapRoute.methodParameters.value,
-          to: swapRoute.methodParameters.to,
-        } as MethodParameters)
+        calldata: swapRoute.methodParameters.calldata,
+        value: swapRoute.methodParameters.value,
+        to: swapRoute.methodParameters.to,
+      } as MethodParameters)
       : undefined,
     simulationStatus: swapRoute.simulationStatus,
   };

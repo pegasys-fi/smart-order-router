@@ -1,16 +1,13 @@
-import { Token } from '@uniswap/sdk-core';
-import { Pair } from '@uniswap/v2-sdk';
+import { Token } from '@pollum-io/sdk-core';
+import { Pair } from '@pollum-io/v1-sdk';
 import _ from 'lodash';
 
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import {
-  DAI_MAINNET,
-  DAI_RINKEBY_1,
-  DAI_RINKEBY_2,
-  USDC_MAINNET,
-  USDT_MAINNET,
-  WBTC_MAINNET,
+  DAI_ROLLUX,
+  USDC_ROLLUX,
+  USDT_ROLLUX,
 } from '../token-provider';
 
 import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
@@ -20,35 +17,13 @@ type ChainTokenList = {
 };
 
 const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.MAINNET]: [
-    WRAPPED_NATIVE_CURRENCY[ChainId.MAINNET]!,
-    DAI_MAINNET,
-    USDC_MAINNET,
-    USDT_MAINNET,
-    WBTC_MAINNET,
+  [ChainId.ROLLUX_TESTNET]: [
+    WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TESTNET]!,
+    DAI_ROLLUX,
+    USDC_ROLLUX,
+    USDT_ROLLUX,
   ],
-  [ChainId.ROPSTEN]: [WRAPPED_NATIVE_CURRENCY[ChainId.ROPSTEN]!],
-  [ChainId.RINKEBY]: [
-    WRAPPED_NATIVE_CURRENCY[ChainId.RINKEBY]!,
-    DAI_RINKEBY_1,
-    DAI_RINKEBY_2,
-  ],
-  [ChainId.GÖRLI]: [WRAPPED_NATIVE_CURRENCY[ChainId.GÖRLI]!],
-  [ChainId.KOVAN]: [WRAPPED_NATIVE_CURRENCY[ChainId.KOVAN]!],
-  //v2 not deployed on [optimism, arbitrum, polygon, celo, gnosis, moonbeam] and their testnets
-  [ChainId.OPTIMISM]: [],
-  [ChainId.ARBITRUM_ONE]: [],
-  [ChainId.ARBITRUM_RINKEBY]: [],
-  [ChainId.ARBITRUM_GOERLI]: [],
-  [ChainId.OPTIMISM_GOERLI]: [],
-  [ChainId.OPTIMISTIC_KOVAN]: [],
-  [ChainId.POLYGON]: [],
-  [ChainId.POLYGON_MUMBAI]: [],
-  [ChainId.CELO]: [],
-  [ChainId.CELO_ALFAJORES]: [],
-  [ChainId.GNOSIS]: [],
-  [ChainId.MOONBEAM]: [],
-  [ChainId.BSC]: [],
+
 };
 
 /**
@@ -64,7 +39,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @class StaticV2SubgraphProvider
  */
 export class StaticV2SubgraphProvider implements IV2SubgraphProvider {
-  constructor(private chainId: ChainId) {}
+  constructor(private chainId: ChainId) { }
 
   public async getPools(
     tokenIn?: Token,

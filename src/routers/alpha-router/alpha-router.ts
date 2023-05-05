@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { BaseProvider, JsonRpcProvider } from '@ethersproject/providers';
-import DEFAULT_TOKEN_LIST from '@uniswap/default-token-list';
-import { Protocol, SwapRouter, Trade } from '@uniswap/router-sdk';
-import { Currency, Fraction, Token, TradeType } from '@uniswap/sdk-core';
+import DEFAULT_TOKEN_LIST from '@pollum-io/default-token-list';
+import { Protocol, SwapRouter, Trade } from '@pollum-io/router-sdk';
+import { Currency, Fraction, Token, TradeType } from '@pollum-io/sdk-core';
 import { TokenList } from '@uniswap/token-lists';
-import { Pool, Position, SqrtPriceMath, TickMath } from '@uniswap/v3-sdk';
+import { Pool, Position, SqrtPriceMath, TickMath } from '@pollum-io/v2-sdk';
 import retry from 'async-retry';
 import JSBI from 'jsbi';
 import _ from 'lodash';
@@ -47,10 +47,10 @@ import { ITokenValidatorProvider, TokenValidatorProvider, } from '../../provider
 import { IV2PoolProvider, V2PoolProvider } from '../../providers/v2/pool-provider';
 import {
   ArbitrumGasData,
-  ArbitrumGasDataProvider,
+  // ArbitrumGasDataProvider,
   IL2GasDataProvider,
   OptimismGasData,
-  OptimismGasDataProvider,
+  // OptimismGasDataProvider,
 } from '../../providers/v3/gas-data-provider';
 import { IV3PoolProvider, V3PoolProvider } from '../../providers/v3/pool-provider';
 import { IV3SubgraphProvider } from '../../providers/v3/subgraph-provider';
@@ -310,7 +310,7 @@ export type AlphaRouterConfig = {
 
 export class AlphaRouter
   implements IRouter<AlphaRouterConfig>,
-    ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig> {
+  ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig> {
   protected chainId: ChainId;
   protected provider: BaseProvider;
   protected multicall2Provider: UniswapMulticallProvider;
@@ -354,9 +354,9 @@ export class AlphaRouter
     v2GasModelFactory,
     mixedRouteGasModelFactory,
     swapRouterProvider,
-    optimismGasDataProvider,
+    // optimismGasDataProvider,
     tokenValidatorProvider,
-    arbitrumGasDataProvider,
+    // arbitrumGasDataProvider,
     simulator,
     routeCachingProvider,
   }: AlphaRouterParams) {
@@ -379,9 +379,7 @@ export class AlphaRouter
       this.onChainQuoteProvider = onChainQuoteProvider;
     } else {
       switch (chainId) {
-        case ChainId.OPTIMISM:
-        case ChainId.OPTIMISM_GOERLI:
-        case ChainId.OPTIMISTIC_KOVAN:
+        case ChainId.ROLLUX_TESTNET:
           this.onChainQuoteProvider = new OnChainQuoteProvider(
             chainId,
             provider,
@@ -411,59 +409,6 @@ export class AlphaRouter
                 attemptsBeforeRollback: 1,
                 rollbackBlockOffset: -10,
               },
-            }
-          );
-          break;
-        case ChainId.ARBITRUM_ONE:
-        case ChainId.ARBITRUM_RINKEBY:
-        case ChainId.ARBITRUM_GOERLI:
-          this.onChainQuoteProvider = new OnChainQuoteProvider(
-            chainId,
-            provider,
-            this.multicall2Provider,
-            {
-              retries: 2,
-              minTimeout: 100,
-              maxTimeout: 1000,
-            },
-            {
-              multicallChunk: 10,
-              gasLimitPerCall: 12_000_000,
-              quoteMinSuccessRate: 0.1,
-            },
-            {
-              gasLimitOverride: 30_000_000,
-              multicallChunk: 6,
-            },
-            {
-              gasLimitOverride: 30_000_000,
-              multicallChunk: 6,
-            }
-          );
-          break;
-        case ChainId.CELO:
-        case ChainId.CELO_ALFAJORES:
-          this.onChainQuoteProvider = new OnChainQuoteProvider(
-            chainId,
-            provider,
-            this.multicall2Provider,
-            {
-              retries: 2,
-              minTimeout: 100,
-              maxTimeout: 1000,
-            },
-            {
-              multicallChunk: 10,
-              gasLimitPerCall: 5_000_000,
-              quoteMinSuccessRate: 0.1,
-            },
-            {
-              gasLimitOverride: 5_000_000,
-              multicallChunk: 5,
-            },
-            {
-              gasLimitOverride: 6_250_000,
-              multicallChunk: 4,
             }
           );
           break;
@@ -591,23 +536,23 @@ export class AlphaRouter
       swapRouterProvider ??
       new SwapRouterProvider(this.multicall2Provider, this.chainId);
 
-    if (chainId === ChainId.OPTIMISM || chainId === ChainId.OPTIMISTIC_KOVAN) {
-      this.l2GasDataProvider =
-        optimismGasDataProvider ??
-        new OptimismGasDataProvider(chainId, this.multicall2Provider);
-    }
-    if (
-      chainId === ChainId.ARBITRUM_ONE ||
-      chainId === ChainId.ARBITRUM_RINKEBY ||
-      chainId === ChainId.ARBITRUM_GOERLI
-    ) {
-      this.l2GasDataProvider =
-        arbitrumGasDataProvider ??
-        new ArbitrumGasDataProvider(chainId, this.provider);
-    }
+    // if (chainId === ChainId.OPTIMISM || chainId === ChainId.OPTIMISTIC_KOVAN) {
+    //   this.l2GasDataProvider =
+    //     optimismGasDataProvider ??
+    //     new OptimismGasDataProvider(chainId, this.multicall2Provider);
+    // }
+    // if (
+    //   chainId === ChainId.ARBITRUM_ONE ||
+    //   chainId === ChainId.ARBITRUM_RINKEBY ||
+    //   chainId === ChainId.ARBITRUM_GOERLI
+    // ) {
+    //   this.l2GasDataProvider =
+    //     arbitrumGasDataProvider ??
+    //     new ArbitrumGasDataProvider(chainId, this.provider);
+    // }
     if (tokenValidatorProvider) {
       this.tokenValidatorProvider = tokenValidatorProvider;
-    } else if (this.chainId === ChainId.MAINNET) {
+    } else if (this.chainId === ChainId.ROLLUX_TESTNET) {
       this.tokenValidatorProvider = new TokenValidatorProvider(
         this.chainId,
         this.multicall2Provider,
@@ -730,8 +675,8 @@ export class AlphaRouter
           ...DEFAULT_ROUTING_CONFIG_BY_CHAIN(this.chainId),
           ...routingConfig,
           /// @dev We do not want to query for mixedRoutes for routeToRatio as they are not supported
-          /// [Protocol.V3, Protocol.V2] will make sure we only query for V3 and V2
-          protocols: [Protocol.V3, Protocol.V2],
+          /// [Protocol.V2, Protocol.V1] will make sure we only query for V3 and V2
+          protocols: [Protocol.V2, Protocol.V1],
         }
       );
       if (!swap) {
@@ -750,7 +695,7 @@ export class AlphaRouter
 
       let targetPoolPriceUpdate;
       swap.route.forEach((route) => {
-        if (route.protocol === Protocol.V3) {
+        if (route.protocol === Protocol.V2) {
           const v3Route = route as V3RouteWithValidQuote;
           v3Route.route.pools.forEach((pool, i) => {
             if (
@@ -1192,8 +1137,8 @@ export class AlphaRouter
     );
     const quotePromises: Promise<GetQuotesResult>[] = [];
 
-    const v3Routes = cachedRoutes.routes.filter((route) => route.protocol === Protocol.V3);
-    const v2Routes = cachedRoutes.routes.filter((route) => route.protocol === Protocol.V2);
+    const v3Routes = cachedRoutes.routes.filter((route) => route.protocol === Protocol.V2);
+    const v2Routes = cachedRoutes.routes.filter((route) => route.protocol === Protocol.V1);
     const mixedRoutes = cachedRoutes.routes.filter((route) => route.protocol === Protocol.MIXED);
 
     // Calculate percents from all routes, we will fetch quotes for each percent in case we had stale data when the route was cached
@@ -1293,11 +1238,11 @@ export class AlphaRouter
     );
 
     const noProtocolsSpecified = protocols.length === 0;
-    const v3ProtocolSpecified = protocols.includes(Protocol.V3);
-    const v2ProtocolSpecified = protocols.includes(Protocol.V2);
+    const v3ProtocolSpecified = protocols.includes(Protocol.V2);
+    const v2ProtocolSpecified = protocols.includes(Protocol.V1);
     const v2SupportedInChain = V2_SUPPORTED.includes(this.chainId);
     const shouldQueryMixedProtocol = protocols.includes(Protocol.MIXED) || (noProtocolsSpecified && v2SupportedInChain);
-    const mixedProtocolAllowed = [ChainId.MAINNET, ChainId.GÖRLI].includes(this.chainId) &&
+    const mixedProtocolAllowed = [ChainId.ROLLUX_TESTNET].includes(this.chainId) &&
       tradeType === TradeType.EXACT_INPUT;
 
     const quotePromises: Promise<GetQuotesResult>[] = [];
@@ -1583,10 +1528,10 @@ export class AlphaRouter
     let hasV2Route = false;
     let hasMixedRoute = false;
     for (const routeAmount of routeAmounts) {
-      if (routeAmount.protocol === Protocol.V3) {
+      if (routeAmount.protocol === Protocol.V2) {
         hasV3Route = true;
       }
-      if (routeAmount.protocol === Protocol.V2) {
+      if (routeAmount.protocol === Protocol.V1) {
         hasV2Route = true;
       }
       if (routeAmount.protocol === Protocol.MIXED) {

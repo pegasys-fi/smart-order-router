@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Token } from '@uniswap/sdk-core';
-import { Pair } from '@uniswap/v2-sdk';
+import { Token } from '@pollum-io/sdk-core';
+import { Pair } from '@pollum-io/v1-sdk';
 import retry, { Options as RetryOptions } from 'async-retry';
 import _ from 'lodash';
 
-import { IUniswapV2Pair__factory } from '../../types/v2/factories/IUniswapV2Pair__factory';
+import { IPegasysPair__factory } from '../../types/v2/factories/IPegasysPair__factory';
 import { ChainId, CurrencyAmount } from '../../util';
 import { log } from '../../util/log';
 import { poolToString } from '../../util/routes';
@@ -76,7 +76,7 @@ export class V2PoolProvider implements IV2PoolProvider {
       minTimeout: 50,
       maxTimeout: 500,
     }
-  ) {}
+  ) { }
 
   public async getPools(
     tokenPairs: [Token, Token][],
@@ -114,10 +114,9 @@ export class V2PoolProvider implements IV2PoolProvider {
     );
 
     log.info(
-      `Got reserves for ${poolAddressSet.size} pools ${
-        providerConfig?.blockNumber
-          ? `as of block: ${await providerConfig?.blockNumber}.`
-          : ``
+      `Got reserves for ${poolAddressSet.size} pools ${providerConfig?.blockNumber
+        ? `as of block: ${await providerConfig?.blockNumber}.`
+        : ``
       }`
     );
 
@@ -209,7 +208,7 @@ export class V2PoolProvider implements IV2PoolProvider {
         TReturn
       >({
         addresses: poolAddresses,
-        contractInterface: IUniswapV2Pair__factory.createInterface(),
+        contractInterface: IPegasysPair__factory.createInterface(),
         functionName: functionName,
         providerConfig,
       });

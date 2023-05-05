@@ -1,5 +1,5 @@
-import { ApprovalTypes } from '@uniswap/router-sdk';
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core';
+import { ApprovalTypes } from '@pollum-io/router-sdk';
+import { Currency, CurrencyAmount } from '@pollum-io/sdk-core';
 
 import { SwapRouter02__factory } from '../types/other/factories/SwapRouter02__factory';
 import { ChainId, log, SWAP_ROUTER_02_ADDRESSES } from '../util';
@@ -35,7 +35,7 @@ export class SwapRouterProvider implements ISwapRouterProvider {
   constructor(
     protected multicall2Provider: IMulticallProvider,
     protected chainId: ChainId
-  ) {}
+  ) { }
 
   public async getApprovalType(
     tokenInAmount: CurrencyAmount<Currency>,

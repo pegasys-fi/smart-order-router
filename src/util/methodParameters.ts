@@ -3,14 +3,14 @@ import {
   Protocol,
   SwapRouter as SwapRouter02,
   Trade,
-} from '@uniswap/router-sdk';
-import { Currency, TradeType } from '@uniswap/sdk-core';
+} from '@pollum-io/router-sdk';
+import { Currency, TradeType } from '@pollum-io/sdk-core';
 import {
   SwapRouter as UniveralRouter,
   UNIVERSAL_ROUTER_ADDRESS,
-} from '@uniswap/universal-router-sdk';
-import { Route as V2RouteRaw } from '@uniswap/v2-sdk';
-import { Route as V3RouteRaw } from '@uniswap/v3-sdk';
+} from '@pollum-io/universal-router-sdk';
+import { Route as V2RouteRaw } from '@pollum-io/v1-sdk';
+import { Route as V3RouteRaw } from '@pollum-io/v2-sdk';
 import _ from 'lodash';
 
 import {
@@ -35,21 +35,21 @@ export function buildTrade<TTradeType extends TradeType>(
   /// Removed partition because of new mixedRoutes
   const v3RouteAmounts = _.filter(
     routeAmounts,
-    (routeAmount) => routeAmount.protocol === Protocol.V3
+    (routeAmount) => routeAmount.protocol === Protocol.V2
   );
   const v2RouteAmounts = _.filter(
     routeAmounts,
-    (routeAmount) => routeAmount.protocol === Protocol.V2
+    (routeAmount) => routeAmount.protocol === Protocol.V1
   );
   const mixedRouteAmounts = _.filter(
     routeAmounts,
     (routeAmount) => routeAmount.protocol === Protocol.MIXED
   );
 
-  const v3Routes = _.map<
+  const v2Routes = _.map<
     V3RouteWithValidQuote,
     {
-      routev3: V3RouteRaw<Currency, Currency>;
+      routev2: V3RouteRaw<Currency, Currency>;
       inputAmount: CurrencyAmount;
       outputAmount: CurrencyAmount;
     }
@@ -80,7 +80,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev3: routeRaw,
+          routev2: routeRaw,
           inputAmount: amountCurrency,
           outputAmount: quoteCurrency,
         };
@@ -104,7 +104,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev3: routeCurrency,
+          routev2: routeCurrency,
           inputAmount: quoteCurrency,
           outputAmount: amountCurrency,
         };
@@ -112,10 +112,10 @@ export function buildTrade<TTradeType extends TradeType>(
     }
   );
 
-  const v2Routes = _.map<
+  const v1Routes = _.map<
     V2RouteWithValidQuote,
     {
-      routev2: V2RouteRaw<Currency, Currency>;
+      routev1: V2RouteRaw<Currency, Currency>;
       inputAmount: CurrencyAmount;
       outputAmount: CurrencyAmount;
     }
@@ -146,7 +146,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev2: routeV2SDK,
+          routev1: routeV2SDK,
           inputAmount: amountCurrency,
           outputAmount: quoteCurrency,
         };
@@ -170,7 +170,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev2: routeV2SDK,
+          routev1: routeV2SDK,
           inputAmount: quoteCurrency,
           outputAmount: amountCurrency,
         };
@@ -224,7 +224,7 @@ export function buildTrade<TTradeType extends TradeType>(
     }
   );
 
-  const trade = new Trade({ v2Routes, v3Routes, mixedRoutes, tradeType });
+  const trade = new Trade({ v1Routes, v2Routes, mixedRoutes, tradeType });
 
   return trade;
 }
