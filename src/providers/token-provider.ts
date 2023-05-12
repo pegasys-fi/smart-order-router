@@ -36,41 +36,38 @@ export type TokenAccessor = {
 // Some well known tokens on each chain for seeding cache / testing.
 export const USDC_ROLLUX = new Token(
   ChainId.ROLLUX_TESTNET,
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  '0x2Be160796F509CC4B1d76fc97494D56CF109C3f1',
   6,
   'USDC',
   'USD//C'
 );
 export const USDT_ROLLUX = new Token(
   ChainId.ROLLUX_TESTNET,
-  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  '0xb97915AED8B5996dE24Ce760EC8DE5A91E820dF7',
   6,
   'USDT',
   'Tether USD'
 );
 export const DAI_ROLLUX = new Token(
   ChainId.ROLLUX_TESTNET,
-  '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  '0xccA991E1Bdca2846640d366116d60BC25C2815db',
   18,
   'DAI',
   'Dai Stablecoin'
 );
 export const PSYS_ROLLUX = new Token( // UNI_MAINNET
   ChainId.ROLLUX_TESTNET,
-  '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+  '0x817C777DEf2Fd6ffE2492C6CD124985C78Ee9235',
   18,
   'PSYS',
   'Pegasys'
 );
 
-
-
 export class TokenProvider implements ITokenProvider {
   constructor(
     private chainId: ChainId,
     protected multicall2Provider: IMulticallProvider
-  ) {
-  }
+  ) { }
 
   public async getTokens(
     _addresses: string[],

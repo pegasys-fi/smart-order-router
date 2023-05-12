@@ -4,11 +4,7 @@ import _ from 'lodash';
 
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
-import {
-  DAI_ROLLUX,
-  USDC_ROLLUX,
-  USDT_ROLLUX,
-} from '../token-provider';
+import { DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX } from '../token-provider';
 
 import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
 
@@ -23,7 +19,6 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDC_ROLLUX,
     USDT_ROLLUX,
   ],
-
 };
 
 /**
@@ -39,7 +34,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @class StaticV2SubgraphProvider
  */
 export class StaticV2SubgraphProvider implements IV2SubgraphProvider {
-  constructor(private chainId: ChainId) { }
+  constructor(private chainId: ChainId) {}
 
   public async getPools(
     tokenIn?: Token,

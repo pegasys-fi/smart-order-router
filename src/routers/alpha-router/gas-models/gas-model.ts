@@ -23,11 +23,7 @@ import {
 } from '../entities/route-with-valid-quote';
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX_TESTNET]: [
-    DAI_ROLLUX,
-    USDC_ROLLUX,
-    USDT_ROLLUX,
-  ],
+  [ChainId.ROLLUX_TESTNET]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
 };
 
 export type L1ToL2GasCosts = {

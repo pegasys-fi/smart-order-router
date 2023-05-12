@@ -1,6 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Protocol } from '@pollum-io/router-sdk';
-import { Currency, CurrencyAmount, Token, TradeType } from '@pollum-io/sdk-core';
+import {
+  Currency,
+  CurrencyAmount,
+  Token,
+  TradeType,
+} from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk/dist/entities';
 import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
 import _ from 'lodash';
@@ -133,9 +138,10 @@ export async function getHighestLiquidityV3USDPool(
   ])
     .flatMap((feeAmount) => {
       const pools = [];
-
+      // console.log(feeAmount)
       for (const usdToken of usdTokens) {
         const pool = poolAccessor.getPool(wrappedCurrency, usdToken, feeAmount);
+        // console.log(pool)
         if (pool) {
           pools.push(pool);
         }
@@ -145,7 +151,7 @@ export async function getHighestLiquidityV3USDPool(
     })
     .compact()
     .value();
-
+  // console.log(pools)
   if (pools.length == 0) {
     const message = `Could not find a USD/${wrappedCurrency.symbol} pool for computing gas costs.`;
     log.error({ pools }, message);
@@ -257,11 +263,7 @@ export async function calculateGasUsed(
   const gasPriceWei = route.gasPriceWei;
   // calculate L2 to L1 security fee if relevant
   let l2toL1FeeInWei = BigNumber.from(0);
-  if (
-    [
-      ChainId.ROLLUX_TESTNET,
-    ].includes(chainId)
-  ) {
+  if ([ChainId.ROLLUX_TESTNET].includes(chainId)) {
     l2toL1FeeInWei = calculateOptimismToL1FeeFromCalldata(
       route.methodParameters!.calldata,
       l2GasData as OptimismGasData

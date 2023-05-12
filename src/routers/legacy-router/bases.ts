@@ -2,11 +2,10 @@
 import { Token } from '@pollum-io/sdk-core';
 
 import {
-  USDC_ROLLUX,
-  USDT_ROLLUX,
   DAI_ROLLUX,
   ITokenProvider,
-
+  USDC_ROLLUX,
+  USDT_ROLLUX,
 } from '../../providers/token-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 
@@ -24,7 +23,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST = (
       USDC_ROLLUX,
       USDT_ROLLUX,
     ],
-
   };
 };
 
@@ -49,8 +47,7 @@ export const ADDITIONAL_BASES = async (
 ): Promise<{
   [chainId in ChainId]?: { [tokenAddress: string]: Token[] };
 }> => {
-  return {
-  };
+  return {};
 };
 
 /**
@@ -62,6 +59,5 @@ export const CUSTOM_BASES = async (
 ): Promise<{
   [chainId in ChainId]?: { [tokenAddress: string]: Token[] };
 }> => {
-  return {
-  };
+  return {};
 };

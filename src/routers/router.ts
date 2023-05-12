@@ -147,13 +147,13 @@ export type SwapOptionsSwapRouter02 = {
     s: string;
   } & (
     | {
-      amount: string;
-      deadline: string;
-    }
+        amount: string;
+        deadline: string;
+      }
     | {
-      nonce: string;
-      expiry: string;
-    }
+        nonce: string;
+        expiry: string;
+      }
   );
 };
 

@@ -3,16 +3,29 @@ import { Token, TradeType } from '@pollum-io/sdk-core';
 import { FeeAmount } from '@pollum-io/v2-sdk';
 import _ from 'lodash';
 
-import { ITokenListProvider, IV2SubgraphProvider, V2SubgraphPool, } from '../../../providers';
 import {
-  USDC_ROLLUX,
-  USDT_ROLLUX,
+  ITokenListProvider,
+  IV2SubgraphProvider,
+  V2SubgraphPool,
+} from '../../../providers';
+import {
   DAI_ROLLUX,
   ITokenProvider,
+  USDC_ROLLUX,
+  USDT_ROLLUX,
 } from '../../../providers/token-provider';
-import { IV2PoolProvider, V2PoolAccessor, } from '../../../providers/v2/pool-provider';
-import { IV3PoolProvider, V3PoolAccessor, } from '../../../providers/v3/pool-provider';
-import { IV3SubgraphProvider, V3SubgraphPool, } from '../../../providers/v3/subgraph-provider';
+import {
+  IV2PoolProvider,
+  V2PoolAccessor,
+} from '../../../providers/v2/pool-provider';
+import {
+  IV3PoolProvider,
+  V3PoolAccessor,
+} from '../../../providers/v3/pool-provider';
+import {
+  IV3SubgraphProvider,
+  V3SubgraphPool,
+} from '../../../providers/v3/subgraph-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../../util';
 import { parseFeeAmount, unparseFeeAmount } from '../../../util/amounts';
 import { log } from '../../../util/log';
@@ -77,13 +90,7 @@ export type MixedRouteGetCandidatePoolsParams = {
 };
 
 const baseTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX_TESTNET]: [
-    USDC_ROLLUX,
-    USDT_ROLLUX,
-    DAI_ROLLUX,
-
-  ],
-
+  [ChainId.ROLLUX_TESTNET]: [USDC_ROLLUX, USDT_ROLLUX, DAI_ROLLUX],
 };
 
 export async function getV3CandidatePools({
@@ -273,10 +280,10 @@ export async function getV3CandidatePools({
   // theres no need to add more.
   let top2EthQuoteTokenPool: V3SubgraphPool[] = [];
   if (
-    (WRAPPED_NATIVE_CURRENCY[chainId]?.symbol ==
+    WRAPPED_NATIVE_CURRENCY[chainId]?.symbol ==
       WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TESTNET]?.symbol &&
-      tokenOut.symbol != 'SYS' &&
-      tokenOut.symbol != 'WSYS')
+    tokenOut.symbol != 'SYS' &&
+    tokenOut.symbol != 'WSYS'
   ) {
     top2EthQuoteTokenPool = _(subgraphPoolsSorted)
       .filter((subgraphPool) => {
@@ -352,7 +359,10 @@ export async function getV3CandidatePools({
               subgraphPool.token1.id == secondHopId)
           );
         })
-        .slice(0, topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop)
+        .slice(
+          0,
+          topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop
+        )
         .value();
     })
     .uniqBy((pool) => pool.id)
@@ -375,7 +385,10 @@ export async function getV3CandidatePools({
               subgraphPool.token1.id == secondHopId)
           );
         })
-        .slice(0, topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop)
+        .slice(
+          0,
+          topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop
+        )
         .value();
     })
     .uniqBy((pool) => pool.id)
@@ -413,7 +426,8 @@ export async function getV3CandidatePools({
   });
 
   const printV3SubgraphPool = (s: V3SubgraphPool) =>
-    `${tokenAccessor.getTokenByAddress(s.token0.id)?.symbol ?? s.token0.id}/${tokenAccessor.getTokenByAddress(s.token1.id)?.symbol ?? s.token1.id
+    `${tokenAccessor.getTokenByAddress(s.token0.id)?.symbol ?? s.token0.id}/${
+      tokenAccessor.getTokenByAddress(s.token1.id)?.symbol ?? s.token1.id
     }/${s.feeTier}`;
 
   log.info(
@@ -452,8 +466,10 @@ export async function getV3CandidatePools({
 
     if (!tokenA || !tokenB) {
       log.info(
-        `Dropping candidate pool for ${subgraphPool.token0.id}/${subgraphPool.token1.id
-        }/${fee} because ${tokenA ? subgraphPool.token1.id : subgraphPool.token0.id
+        `Dropping candidate pool for ${subgraphPool.token0.id}/${
+          subgraphPool.token1.id
+        }/${fee} because ${
+          tokenA ? subgraphPool.token1.id : subgraphPool.token0.id
         } not found by token provider`
       );
       return undefined;
@@ -797,7 +813,8 @@ export async function getV2CandidatePools({
   });
 
   const printV2SubgraphPool = (s: V2SubgraphPool) =>
-    `${tokenAccessor.getTokenByAddress(s.token0.id)?.symbol ?? s.token0.id}/${tokenAccessor.getTokenByAddress(s.token1.id)?.symbol ?? s.token1.id
+    `${tokenAccessor.getTokenByAddress(s.token0.id)?.symbol ?? s.token0.id}/${
+      tokenAccessor.getTokenByAddress(s.token1.id)?.symbol ?? s.token1.id
     }`;
 
   log.info(
@@ -1015,8 +1032,10 @@ export async function getMixedRouteCandidatePools({
 
     if (!tokenA || !tokenB) {
       log.info(
-        `Dropping candidate pool for ${subgraphPool.token0.id}/${subgraphPool.token1.id
-        }/${fee} because ${tokenA ? subgraphPool.token1.id : subgraphPool.token0.id
+        `Dropping candidate pool for ${subgraphPool.token0.id}/${
+          subgraphPool.token1.id
+        }/${fee} because ${
+          tokenA ? subgraphPool.token1.id : subgraphPool.token0.id
         } not found by token provider`
       );
       return undefined;

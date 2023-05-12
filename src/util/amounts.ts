@@ -6,7 +6,7 @@ import {
 import { FeeAmount } from '@pollum-io/v2-sdk';
 import JSBI from 'jsbi';
 
-export class CurrencyAmount extends CurrencyAmountRaw<Currency> { }
+export class CurrencyAmount extends CurrencyAmountRaw<Currency> {}
 
 export const MAX_UINT160 = '0xffffffffffffffffffffffffffffffffffffffff';
 

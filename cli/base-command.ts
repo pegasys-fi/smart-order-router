@@ -299,7 +299,7 @@ export abstract class BaseCommand extends Command {
         v2PoolProvider,
         v3PoolProvider,
         provider,
-        { [ChainId.ARBITRUM_ONE]: 1 }
+        { [ChainId.ROLLUX_TESTNET]: 1 }
       );
 
       const ethEstimateGasSimulator = new EthEstimateGasSimulator(

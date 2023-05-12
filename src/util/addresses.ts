@@ -3,31 +3,24 @@ import { FACTORY_ADDRESS } from '@pollum-io/v2-sdk';
 
 import { ChainId, NETWORKS_WITH_SAME_UNISWAP_ADDRESSES } from './chains';
 
-
 export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap(FACTORY_ADDRESS),
-  [ChainId.ROLLUX_TESTNET]: FACTORY_ADDRESS,
-
+  ...constructSameAddressMap(FACTORY_ADDRESS, [ChainId.ROLLUX_TESTNET]),
 };
 
 export const QUOTER_V2_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0x61fFE014bA17989E743c5F6cB21bF9697530B21e'),
-  [ChainId.ROLLUX_TESTNET]: "",
-
+  ...constructSameAddressMap('0xC3d7521CD0Dbde97d9607C4e6389B806B36e8f66', [ChainId.ROLLUX_TESTNET]),
 };
 
 export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
-  [ChainId.ROLLUX_TESTNET]: "",
+  [ChainId.ROLLUX_TESTNET]: '',
 };
 
 export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0x1F98415757620B543A52E61c46B32eB19261F984'),
-  [ChainId.ROLLUX_TESTNET]: "",
-
+  ...constructSameAddressMap('0xCbA1683e1f0BA5061573CCE7C1A73a80C3827cef', [ChainId.ROLLUX_TESTNET]),
 };
 
 export const SWAP_ROUTER_02_ADDRESSES = (_chainId: number) => {
-  return '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
+  return '0xfB2529aE4D41ae6c8B6782a5CBb56E24141133D8';
 };
 
 export const OVM_GASPRICE_ADDRESS =

@@ -35,7 +35,7 @@ export class SwapRouterProvider implements ISwapRouterProvider {
   constructor(
     protected multicall2Provider: IMulticallProvider,
     protected chainId: ChainId
-  ) { }
+  ) {}
 
   public async getApprovalType(
     tokenInAmount: CurrencyAmount<Currency>,
