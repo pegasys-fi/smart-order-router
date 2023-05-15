@@ -3,11 +3,11 @@ import { Token } from '@pollum-io/sdk-core';
 
 import {
   DAI_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
   ITokenProvider,
   USDC_ROLLUX,
-  USDT_ROLLUX,
-  DAI_ROLLUX_TANENBAUM,
   USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
 } from '../../providers/token-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';

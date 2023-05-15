@@ -6,11 +6,11 @@ import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import {
   DAI_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
   USDC_ROLLUX,
-  USDT_ROLLUX,
   USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
-  DAI_ROLLUX_TANENBAUM
 } from '../token-provider';
 
 import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
@@ -32,7 +32,6 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDT_ROLLUX_TANENBAUM,
     DAI_ROLLUX_TANENBAUM,
   ],
-
 };
 
 /**
@@ -48,7 +47,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @class StaticV2SubgraphProvider
  */
 export class StaticV2SubgraphProvider implements IV2SubgraphProvider {
-  constructor(private chainId: ChainId) { }
+  constructor(private chainId: ChainId) {}
 
   public async getPools(
     tokenIn?: Token,

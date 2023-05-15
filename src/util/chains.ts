@@ -6,13 +6,19 @@ export enum ChainId {
 }
 
 // WIP: Gnosis, Moonbeam
-export const SUPPORTED_CHAINS: ChainId[] = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX];
+export const SUPPORTED_CHAINS: ChainId[] = [
+  ChainId.ROLLUX_TANENBAUM,
+  ChainId.ROLLUX,
+];
 
 export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM];
 
 export const HAS_L1_FEE = [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM];
 
-export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM];
+export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [
+  ChainId.ROLLUX,
+  ChainId.ROLLUX_TANENBAUM,
+];
 
 export const ID_TO_CHAIN_ID = (id: number): ChainId => {
   switch (id) {

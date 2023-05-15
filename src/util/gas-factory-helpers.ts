@@ -435,10 +435,10 @@ export function initSwapRouteFromExisting(
     blockNumber: BigNumber.from(swapRoute.blockNumber),
     methodParameters: swapRoute.methodParameters
       ? ({
-        calldata: swapRoute.methodParameters.calldata,
-        value: swapRoute.methodParameters.value,
-        to: swapRoute.methodParameters.to,
-      } as MethodParameters)
+          calldata: swapRoute.methodParameters.calldata,
+          value: swapRoute.methodParameters.value,
+          to: swapRoute.methodParameters.to,
+        } as MethodParameters)
       : undefined,
     simulationStatus: swapRoute.simulationStatus,
   };

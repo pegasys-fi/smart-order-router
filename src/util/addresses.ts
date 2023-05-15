@@ -11,8 +11,7 @@ export const QUOTER_V2_ADDRESSES: AddressMap = {
   ...constructSameAddressMap('0xC3d7521CD0Dbde97d9607C4e6389B806B36e8f66'),
 };
 
-export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
-};
+export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {};
 
 export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
   ...constructSameAddressMap('0xCbA1683e1f0BA5061573CCE7C1A73a80C3827cef'),

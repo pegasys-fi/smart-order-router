@@ -343,8 +343,8 @@ export type AlphaRouterConfig = {
 
 export class AlphaRouter
   implements
-  IRouter<AlphaRouterConfig>,
-  ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
+    IRouter<AlphaRouterConfig>,
+    ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
 {
   protected chainId: ChainId;
   protected provider: BaseProvider;

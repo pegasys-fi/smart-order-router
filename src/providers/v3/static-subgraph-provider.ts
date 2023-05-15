@@ -9,11 +9,11 @@ import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import {
   DAI_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
   USDC_ROLLUX,
-  USDT_ROLLUX,
   USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
-  DAI_ROLLUX_TANENBAUM
 } from '../token-provider';
 
 import { IV3PoolProvider } from './pool-provider';
@@ -53,7 +53,7 @@ export class StaticV3SubgraphProvider implements IV3SubgraphProvider {
   constructor(
     private chainId: ChainId,
     private poolProvider: IV3PoolProvider
-  ) { }
+  ) {}
 
   public async getPools(
     tokenIn?: Token,

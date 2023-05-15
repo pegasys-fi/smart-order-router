@@ -3,11 +3,11 @@ import { Token } from '@pollum-io/sdk-core';
 
 import {
   DAI_ROLLUX,
-  USDC_ROLLUX,
-  USDT_ROLLUX,
-  USDC_ROLLUX_TANENBAUM,
-  USDT_ROLLUX_TANENBAUM,
   DAI_ROLLUX_TANENBAUM,
+  USDC_ROLLUX,
+  USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX,
+  USDT_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -27,7 +27,11 @@ import {
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
   [ChainId.ROLLUX]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
-  [ChainId.ROLLUX_TANENBAUM]: [DAI_ROLLUX_TANENBAUM, USDC_ROLLUX_TANENBAUM, USDT_ROLLUX_TANENBAUM],
+  [ChainId.ROLLUX_TANENBAUM]: [
+    DAI_ROLLUX_TANENBAUM,
+    USDC_ROLLUX_TANENBAUM,
+    USDT_ROLLUX_TANENBAUM,
+  ],
 };
 
 export type L1ToL2GasCosts = {
@@ -44,8 +48,8 @@ export type BuildOnChainGasModelFactoryType = {
   quoteToken: Token;
   v2poolProvider: IV2PoolProvider;
   l2GasDataProvider?:
-  | IL2GasDataProvider<OptimismGasData>
-  | IL2GasDataProvider<ArbitrumGasData>;
+    | IL2GasDataProvider<OptimismGasData>
+    | IL2GasDataProvider<ArbitrumGasData>;
 };
 
 export type BuildV2GasModelFactoryType = {
