@@ -442,16 +442,17 @@ export async function getBestSwapRouteBy(
   // If swapping on an L2 that includes a L1 security fee, calculate the fee and include it in the gas adjusted quotes
   if (HAS_L1_FEE.includes(chainId)) {
     // ensure the gasModel exists and that the swap route is a v3 only route
-    const onlyV3Routes = bestSwap.every(
-      (route) => route.protocol == Protocol.V2
-    );
-    if (gasModel == undefined || !onlyV3Routes) {
-      throw new Error("Can't compute L1 gas fees.");
-    } else {
-      gasCostsL1ToL2 = await gasModel.calculateL1GasFees!(
-        bestSwap as V3RouteWithValidQuote[]
-      );
-    }
+    // const onlyV3Routes = bestSwap.every(
+    //   (route) => route.protocol == Protocol.V2
+    // );
+
+    // if (gasModel == undefined || !onlyV3Routes) {
+    //   throw new Error("Can't compute L1 gas fees.");
+    // } else {
+    //   gasCostsL1ToL2 = await gasModel.calculateL1GasFees!(
+    //     bestSwap as V3RouteWithValidQuote[]
+    //   );
+    // } // TODO: uncomment this when we have a gas model for L2
   }
 
   const { gasCostL1USD, gasCostL1QuoteToken } = gasCostsL1ToL2;
