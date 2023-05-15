@@ -102,7 +102,7 @@ export abstract class BaseCommand extends Command {
     chainId: flags.integer({
       char: 'c',
       required: false,
-      default: ChainId.ROLLUX_TESTNET,
+      default: ChainId.ROLLUX_TANENBAUM, // TODO: change to mainnet
       options: CHAIN_IDS_LIST,
     }),
     tokenListURI: flags.string({
@@ -299,7 +299,7 @@ export abstract class BaseCommand extends Command {
         v2PoolProvider,
         v3PoolProvider,
         provider,
-        { [ChainId.ROLLUX_TESTNET]: 1 }
+        { [ChainId.ROLLUX]: ChainId.ROLLUX }
       );
 
       const ethEstimateGasSimulator = new EthEstimateGasSimulator(

@@ -4,19 +4,18 @@ import { FACTORY_ADDRESS } from '@pollum-io/v2-sdk';
 import { ChainId, NETWORKS_WITH_SAME_UNISWAP_ADDRESSES } from './chains';
 
 export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap(FACTORY_ADDRESS, [ChainId.ROLLUX_TESTNET]),
+  ...constructSameAddressMap(FACTORY_ADDRESS),
 };
 
 export const QUOTER_V2_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0xC3d7521CD0Dbde97d9607C4e6389B806B36e8f66', [ChainId.ROLLUX_TESTNET]),
+  ...constructSameAddressMap('0xC3d7521CD0Dbde97d9607C4e6389B806B36e8f66'),
 };
 
 export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
-  [ChainId.ROLLUX_TESTNET]: '',
 };
 
 export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0xCbA1683e1f0BA5061573CCE7C1A73a80C3827cef', [ChainId.ROLLUX_TESTNET]),
+  ...constructSameAddressMap('0xCbA1683e1f0BA5061573CCE7C1A73a80C3827cef'),
 };
 
 export const SWAP_ROUTER_02_ADDRESSES = (_chainId: number) => {
@@ -51,8 +50,15 @@ export function constructSameAddressMap<T extends string>(
 export const WETH9: {
   [chainId in ChainId]: Token;
 } = {
-  [ChainId.ROLLUX_TESTNET]: new Token(
-    ChainId.ROLLUX_TESTNET,
+  [ChainId.ROLLUX]: new Token(
+    ChainId.ROLLUX,
+    '0x4200000000000000000000000000000000000006',
+    18,
+    'WSYS',
+    'Wrapped Syscoin'
+  ),
+  [ChainId.ROLLUX_TANENBAUM]: new Token(
+    ChainId.ROLLUX_TANENBAUM,
     '0x4200000000000000000000000000000000000006',
     18,
     'WSYS',

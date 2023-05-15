@@ -6,6 +6,9 @@ import {
   ITokenProvider,
   USDC_ROLLUX,
   USDT_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
+  USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX_TANENBAUM,
 } from '../../providers/token-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 
@@ -17,11 +20,17 @@ export const BASES_TO_CHECK_TRADES_AGAINST = (
   _tokenProvider: ITokenProvider
 ): ChainTokenList => {
   return {
-    [ChainId.ROLLUX_TESTNET]: [
-      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TESTNET]!,
+    [ChainId.ROLLUX]: [
+      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX]!,
       DAI_ROLLUX,
       USDC_ROLLUX,
       USDT_ROLLUX,
+    ],
+    [ChainId.ROLLUX_TANENBAUM]: [
+      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
+      USDC_ROLLUX_TANENBAUM,
+      USDT_ROLLUX_TANENBAUM,
+      DAI_ROLLUX_TANENBAUM,
     ],
   };
 };

@@ -5,6 +5,9 @@ import {
   DAI_ROLLUX,
   USDC_ROLLUX,
   USDT_ROLLUX,
+  USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX_TANENBAUM,
+  DAI_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -23,7 +26,8 @@ import {
 } from '../entities/route-with-valid-quote';
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX_TESTNET]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
+  [ChainId.ROLLUX]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
+  [ChainId.ROLLUX_TANENBAUM]: [DAI_ROLLUX_TANENBAUM, USDC_ROLLUX_TANENBAUM, USDT_ROLLUX_TANENBAUM],
 };
 
 export type L1ToL2GasCosts = {

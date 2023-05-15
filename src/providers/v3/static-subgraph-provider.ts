@@ -7,7 +7,14 @@ import _ from 'lodash';
 import { unparseFeeAmount } from '../../util/amounts';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
-import { DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX } from '../token-provider';
+import {
+  DAI_ROLLUX,
+  USDC_ROLLUX,
+  USDT_ROLLUX,
+  USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX_TANENBAUM,
+  DAI_ROLLUX_TANENBAUM
+} from '../token-provider';
 
 import { IV3PoolProvider } from './pool-provider';
 import { IV3SubgraphProvider, V3SubgraphPool } from './subgraph-provider';
@@ -17,11 +24,17 @@ type ChainTokenList = {
 };
 
 const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.ROLLUX_TESTNET]: [
-    WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TESTNET]!,
+  [ChainId.ROLLUX]: [
+    WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX]!,
     DAI_ROLLUX,
     USDC_ROLLUX,
     USDT_ROLLUX,
+  ],
+  [ChainId.ROLLUX_TANENBAUM]: [
+    WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TANENBAUM]!,
+    USDC_ROLLUX_TANENBAUM,
+    USDT_ROLLUX_TANENBAUM,
+    DAI_ROLLUX_TANENBAUM,
   ],
 };
 
@@ -40,7 +53,7 @@ export class StaticV3SubgraphProvider implements IV3SubgraphProvider {
   constructor(
     private chainId: ChainId,
     private poolProvider: IV3PoolProvider
-  ) {}
+  ) { }
 
   public async getPools(
     tokenIn?: Token,
