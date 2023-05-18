@@ -45,8 +45,8 @@ export const printV2SubgraphPool = (s: V2SubgraphPool) =>
   `${s.token0.id}/${s.token1.id}`;
 
 const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
-  // [ChainId.MAINNET]:
-  //   'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+  [ChainId.ROLLUX]:
+    'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys-v2',
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.

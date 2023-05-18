@@ -102,7 +102,7 @@ export abstract class BaseCommand extends Command {
     chainId: flags.integer({
       char: 'c',
       required: false,
-      default: ChainId.ROLLUX_TANENBAUM, // TODO: change to mainnet
+      default: ChainId.ROLLUX,
       options: CHAIN_IDS_LIST,
     }),
     tokenListURI: flags.string({

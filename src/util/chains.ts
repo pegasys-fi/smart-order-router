@@ -13,7 +13,7 @@ export const SUPPORTED_CHAINS: ChainId[] = [
 
 export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM];
 
-export const HAS_L1_FEE: ChainId[] = []; //TODO: add rollux  
+export const HAS_L1_FEE: ChainId[] = []; //TODO: add rollux
 
 export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [
   ChainId.ROLLUX,
