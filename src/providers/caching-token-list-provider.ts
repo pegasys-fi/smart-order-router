@@ -178,8 +178,8 @@ export class CachingTokenListProvider
 
     // We consider ETH as a regular ERC20 Token throughout this package. We don't use the NativeCurrency object from the sdk.
     // When we build the calldata for swapping we insert wrapping/unwrapping as needed.
-    if (_symbol == 'ETH') {
-      symbol = 'WETH';
+    if (_symbol == 'SYS') {
+      symbol = 'WSYS';
     }
 
     if (!this.chainSymbolToTokenInfo[this.chainId.toString()]) {

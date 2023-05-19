@@ -272,7 +272,7 @@ export async function getV3CandidatePools({
           token1: {
             id: token1.address,
           },
-          tvlETH: 10000,
+          tvlSYS: 10000,
           tvlUSD: 10000,
         };
       }
@@ -682,9 +682,9 @@ export async function getV2CandidatePools({
   // Note: we do not need to check other native currencies for the V2 Protocol
   let topByEthQuoteTokenPool: V2SubgraphPool[] = [];
   if (
-    tokenOut.symbol != 'WETH' &&
+    tokenOut.symbol != 'WSYS' &&
     tokenOut.symbol != 'WETH9' &&
-    tokenOut.symbol != 'ETH'
+    tokenOut.symbol != 'SYS'
   ) {
     topByEthQuoteTokenPool = _(subgraphPoolsSorted)
       .filter((subgraphPool) => {

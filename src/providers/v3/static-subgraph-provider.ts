@@ -124,7 +124,7 @@ export class StaticV3SubgraphProvider implements IV3SubgraphProvider {
             id: token1.address,
           },
           // As a very rough proxy we just use liquidity for TVL.
-          tvlETH: liquidityNumber,
+          tvlSYS: liquidityNumber,
           tvlUSD: liquidityNumber,
         };
       })

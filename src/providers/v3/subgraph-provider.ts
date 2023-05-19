@@ -18,7 +18,7 @@ export interface V3SubgraphPool {
   token1: {
     id: string;
   };
-  tvlETH: number;
+  tvlSYS: number;
   tvlUSD: number;
 }
 
@@ -35,7 +35,7 @@ type RawV3SubgraphPool = {
     id: string;
   };
   totalValueLockedUSD: string;
-  totalValueLockedETH: string;
+  totalValueLockedSYS: string;
 };
 
 export const printV3SubgraphPool = (s: V3SubgraphPool) =>
@@ -109,7 +109,7 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
           feeTier
           liquidity
           totalValueLockedUSD
-          totalValueLockedETH
+          totalValueLockedSYS
         }
       }
     `;
@@ -194,10 +194,10 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
       .filter(
         (pool) =>
           parseInt(pool.liquidity) > 0 ||
-          parseFloat(pool.totalValueLockedETH) > 0.01
+          parseFloat(pool.totalValueLockedSYS) > 0.01
       )
       .map((pool) => {
-        const { totalValueLockedETH, totalValueLockedUSD, ...rest } = pool;
+        const { totalValueLockedSYS, totalValueLockedUSD, ...rest } = pool;
 
         return {
           ...rest,
@@ -208,7 +208,7 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
           token1: {
             id: pool.token1.id.toLowerCase(),
           },
-          tvlETH: parseFloat(totalValueLockedETH),
+          tvlSYS: parseFloat(totalValueLockedSYS),
           tvlUSD: parseFloat(totalValueLockedUSD),
         };
       });

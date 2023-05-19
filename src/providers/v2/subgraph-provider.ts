@@ -32,7 +32,7 @@ type RawV2SubgraphPool = {
     id: string;
   };
   totalSupply: string;
-  trackedReserveETH: string;
+  trackedReserveSYS: string;
   reserveUSD: string;
 };
 
@@ -96,7 +96,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
           token0 { id, symbol }
           token1 { id, symbol }
           totalSupply
-          trackedReserveETH
+          trackedReserveSYS
           reserveUSD
         }
       }
@@ -204,7 +204,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
         return (
           pool.token0.id == FEI ||
           pool.token1.id == FEI ||
-          parseFloat(pool.trackedReserveETH) > threshold
+          parseFloat(pool.trackedReserveSYS) > threshold
         );
       })
       .map((pool) => {
@@ -218,7 +218,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
             id: pool.token1.id.toLowerCase(),
           },
           supply: parseFloat(pool.totalSupply),
-          reserve: parseFloat(pool.trackedReserveETH),
+          reserve: parseFloat(pool.trackedReserveSYS),
           reserveUSD: parseFloat(pool.reserveUSD),
         };
       });
