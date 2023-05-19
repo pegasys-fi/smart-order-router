@@ -34,28 +34,28 @@ export type TokenAccessor = {
 };
 
 export const USDC_ROLLUX = new Token(
-  ChainId.ROLLUX_TANENBAUM,
+  ChainId.ROLLUX,
   '0xdBB59E294A93487822d1d7e164609Cd59d396fb5',
   6,
   'USDC',
   'USD//C'
 );
 export const USDT_ROLLUX = new Token(
-  ChainId.ROLLUX_TANENBAUM,
+  ChainId.ROLLUX,
   '0x4DFc340487bbec780bA8458e614b732d7226AE8f',
   6,
   'USDT',
   'Tether USD'
 );
 export const DAI_ROLLUX = new Token(
-  ChainId.ROLLUX_TANENBAUM,
+  ChainId.ROLLUX,
   '0x5de737495Fe261cc9d6D32E00196d5e4ef43594D',
   18,
   'DAI',
   'Dai Stablecoin'
 );
 export const PSYS_ROLLUX = new Token(
-  ChainId.ROLLUX_TANENBAUM,
+  ChainId.ROLLUX,
   '0x8e59ED2DF847Ad3d19624480Db5B2B3Ba27fC9a8',
   18,
   'PSYS',

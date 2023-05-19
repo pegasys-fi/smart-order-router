@@ -1,3 +1,3 @@
 // Calldata to max-approve our V3 Router contract
 export const APPROVE_TOKEN_FOR_TRANSFER =
-  '0x095ea7b300000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+  '095ea7b3000000000000000000000000fb2529ae4d41ae6c8b6782a5cbb56e24141133d8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
