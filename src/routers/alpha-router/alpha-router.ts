@@ -3,7 +3,7 @@ import { BaseProvider, JsonRpcProvider } from '@ethersproject/providers';
 import DEFAULT_TOKEN_LIST from '@pollum-io/default-token-list';
 import { Protocol, SwapRouter, Trade } from '@pollum-io/router-sdk';
 import { Currency, Fraction, Token, TradeType } from '@pollum-io/sdk-core';
-import { Pool, Position, SqrtPriceMath, TickMath } from '@pollum-io/v2-sdk';
+import { Pool, Position, SqrtPriceMath, TickMath } from '@pollum-io/v3-sdk';
 import { TokenList } from '@uniswap/token-lists';
 import retry from 'async-retry';
 import JSBI from 'jsbi';
@@ -343,8 +343,8 @@ export type AlphaRouterConfig = {
 
 export class AlphaRouter
   implements
-    IRouter<AlphaRouterConfig>,
-    ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
+  IRouter<AlphaRouterConfig>,
+  ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
 {
   protected chainId: ChainId;
   protected provider: BaseProvider;
@@ -713,8 +713,8 @@ export class AlphaRouter
           ...DEFAULT_ROUTING_CONFIG_BY_CHAIN(this.chainId),
           ...routingConfig,
           /// @dev We do not want to query for mixedRoutes for routeToRatio as they are not supported
-          /// [Protocol.V2, Protocol.V1] will make sure we only query for V3 and V2
-          protocols: [Protocol.V2, Protocol.V1],
+          /// [Protocol.V3, Protocol.V1] will make sure we only query for V3 and V2
+          protocols: [Protocol.V3, Protocol.V1],
         }
       );
       if (!swap) {
@@ -733,7 +733,7 @@ export class AlphaRouter
 
       let targetPoolPriceUpdate;
       swap.route.forEach((route) => {
-        if (route.protocol === Protocol.V2) {
+        if (route.protocol === Protocol.V3) {
           const v3Route = route as V3RouteWithValidQuote;
           v3Route.route.pools.forEach((pool, i) => {
             if (
@@ -1232,9 +1232,9 @@ export class AlphaRouter
     const quotePromises: Promise<GetQuotesResult>[] = [];
 
     const v3Routes = cachedRoutes.routes.filter(
-      (route) => route.protocol === Protocol.V2
+      (route) => route.protocol === Protocol.V3
     );
-    const v2Routes = cachedRoutes.routes.filter(
+    const v1Routes = cachedRoutes.routes.filter(
       (route) => route.protocol === Protocol.V1
     );
     const mixedRoutes = cachedRoutes.routes.filter(
@@ -1274,13 +1274,13 @@ export class AlphaRouter
       );
     }
 
-    if (v2Routes.length > 0) {
+    if (v1Routes.length > 0) {
       quotePromises.push(
         // When we fetch the quotes in V2, we are not calling the `onChainProvider` like on v3Routes and mixedRoutes
         // Instead we are using the reserves in the Pool object, so we need to re-load the current reserves.
         this.v2Quoter.getRoutesThenQuotes(
-          v2Routes[0]!.tokenIn,
-          v2Routes[0]!.tokenOut,
+          v1Routes[0]!.tokenIn,
+          v1Routes[0]!.tokenOut,
           amounts,
           percents,
           quoteToken,
@@ -1349,7 +1349,7 @@ export class AlphaRouter
     );
 
     const noProtocolsSpecified = protocols.length === 0;
-    const v3ProtocolSpecified = protocols.includes(Protocol.V2);
+    const v3ProtocolSpecified = protocols.includes(Protocol.V3);
     const v2ProtocolSpecified = protocols.includes(Protocol.V1);
     const v2SupportedInChain = V2_SUPPORTED.includes(this.chainId);
     const shouldQueryMixedProtocol =
@@ -1649,22 +1649,22 @@ export class AlphaRouter
     }
 
     let hasV3Route = false;
-    let hasV2Route = false;
+    let hasV1Route = false;
     let hasMixedRoute = false;
     for (const routeAmount of routeAmounts) {
-      if (routeAmount.protocol === Protocol.V2) {
+      if (routeAmount.protocol === Protocol.V3) {
         hasV3Route = true;
       }
       if (routeAmount.protocol === Protocol.V1) {
-        hasV2Route = true;
+        hasV1Route = true;
       }
       if (routeAmount.protocol === Protocol.MIXED) {
         hasMixedRoute = true;
       }
     }
 
-    if (hasMixedRoute && (hasV3Route || hasV2Route)) {
-      if (hasV3Route && hasV2Route) {
+    if (hasMixedRoute && (hasV3Route || hasV1Route)) {
+      if (hasV3Route && hasV1Route) {
         metric.putMetric(
           `MixedAndV3AndV2SplitRoute`,
           1,
@@ -1682,7 +1682,7 @@ export class AlphaRouter
           1,
           MetricLoggerUnit.Count
         );
-      } else if (hasV2Route) {
+      } else if (hasV1Route) {
         metric.putMetric(`MixedAndV2SplitRoute`, 1, MetricLoggerUnit.Count);
         metric.putMetric(
           `MixedAndV2SplitRouteForChain${this.chainId}`,
@@ -1690,7 +1690,7 @@ export class AlphaRouter
           MetricLoggerUnit.Count
         );
       }
-    } else if (hasV3Route && hasV2Route) {
+    } else if (hasV3Route && hasV1Route) {
       metric.putMetric(`V3AndV2SplitRoute`, 1, MetricLoggerUnit.Count);
       metric.putMetric(
         `V3AndV2SplitRouteForChain${this.chainId}`,
@@ -1729,7 +1729,7 @@ export class AlphaRouter
           MetricLoggerUnit.Count
         );
       }
-    } else if (hasV2Route) {
+    } else if (hasV1Route) {
       if (routeAmounts.length > 1) {
         metric.putMetric(`V2SplitRoute`, 1, MetricLoggerUnit.Count);
         metric.putMetric(
@@ -1738,9 +1738,9 @@ export class AlphaRouter
           MetricLoggerUnit.Count
         );
       } else {
-        metric.putMetric(`V2Route`, 1, MetricLoggerUnit.Count);
+        metric.putMetric(`V1Route`, 1, MetricLoggerUnit.Count);
         metric.putMetric(
-          `V2RouteForChain${this.chainId}`,
+          `V1RouteForChain${this.chainId}`,
           1,
           MetricLoggerUnit.Count
         );

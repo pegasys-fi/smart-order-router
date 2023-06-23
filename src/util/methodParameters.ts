@@ -9,8 +9,8 @@ import {
   SwapRouter as UniveralRouter,
   UNIVERSAL_ROUTER_ADDRESS,
 } from '@pollum-io/universal-router-sdk';
-import { Route as V2RouteRaw } from '@pollum-io/v1-sdk';
-import { Route as V3RouteRaw } from '@pollum-io/v2-sdk';
+import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
+import { Route as V3RouteRaw } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import {
@@ -22,7 +22,7 @@ import {
   SWAP_ROUTER_02_ADDRESSES,
   SwapOptions,
   SwapType,
-  V2RouteWithValidQuote,
+  V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '..';
 
@@ -35,7 +35,7 @@ export function buildTrade<TTradeType extends TradeType>(
   /// Removed partition because of new mixedRoutes
   const v3RouteAmounts = _.filter(
     routeAmounts,
-    (routeAmount) => routeAmount.protocol === Protocol.V2
+    (routeAmount) => routeAmount.protocol === Protocol.V3
   );
   const v2RouteAmounts = _.filter(
     routeAmounts,
@@ -46,10 +46,10 @@ export function buildTrade<TTradeType extends TradeType>(
     (routeAmount) => routeAmount.protocol === Protocol.MIXED
   );
 
-  const v2Routes = _.map<
+  const v3Routes = _.map<
     V3RouteWithValidQuote,
     {
-      routev2: V3RouteRaw<Currency, Currency>;
+      routev3: V3RouteRaw<Currency, Currency>;
       inputAmount: CurrencyAmount;
       outputAmount: CurrencyAmount;
     }
@@ -80,7 +80,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev2: routeRaw,
+          routev3: routeRaw,
           inputAmount: amountCurrency,
           outputAmount: quoteCurrency,
         };
@@ -104,7 +104,7 @@ export function buildTrade<TTradeType extends TradeType>(
         );
 
         return {
-          routev2: routeCurrency,
+          routev3: routeCurrency,
           inputAmount: quoteCurrency,
           outputAmount: amountCurrency,
         };
@@ -113,15 +113,15 @@ export function buildTrade<TTradeType extends TradeType>(
   );
 
   const v1Routes = _.map<
-    V2RouteWithValidQuote,
+    V1RouteWithValidQuote,
     {
-      routev1: V2RouteRaw<Currency, Currency>;
+      routev1: V1RouteRaw<Currency, Currency>;
       inputAmount: CurrencyAmount;
       outputAmount: CurrencyAmount;
     }
   >(
-    v2RouteAmounts as V2RouteWithValidQuote[],
-    (routeAmount: V2RouteWithValidQuote) => {
+    v2RouteAmounts as V1RouteWithValidQuote[],
+    (routeAmount: V1RouteWithValidQuote) => {
       const { route, amount, quote } = routeAmount;
 
       // The route, amount and quote are all in terms of wrapped tokens.
@@ -139,7 +139,7 @@ export function buildTrade<TTradeType extends TradeType>(
           quote.denominator
         );
 
-        const routeV2SDK = new V2RouteRaw(
+        const routeV2SDK = new V1RouteRaw(
           route.pairs,
           amountCurrency.currency,
           quoteCurrency.currency
@@ -163,7 +163,7 @@ export function buildTrade<TTradeType extends TradeType>(
           amount.denominator
         );
 
-        const routeV2SDK = new V2RouteRaw(
+        const routeV2SDK = new V1RouteRaw(
           route.pairs,
           quoteCurrency.currency,
           amountCurrency.currency
@@ -224,7 +224,7 @@ export function buildTrade<TTradeType extends TradeType>(
     }
   );
 
-  const trade = new Trade({ v1Routes, v2Routes, mixedRoutes, tradeType });
+  const trade = new Trade({ v1Routes, v3Routes, mixedRoutes, tradeType });
 
   return trade;
 }

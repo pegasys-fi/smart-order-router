@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Currency, Token, TradeType } from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import {
@@ -11,7 +11,7 @@ import {
   TokenValidationResult,
 } from '../../../providers';
 import { ChainId, CurrencyAmount, log, poolToString } from '../../../util';
-import { MixedRoute, V2Route, V3Route } from '../../router';
+import { MixedRoute, V1Route, V3Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
 import { RouteWithValidQuote } from '../entities/route-with-valid-quote';
 import { CandidatePoolsBySelectionCriteria } from '../functions/get-candidate-pools';
@@ -26,7 +26,7 @@ import { GetQuotesResult, GetRoutesResult } from './model/results';
  * @abstract
  * @template Route
  */
-export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
+export abstract class BaseQuoter<Route extends V1Route | V3Route | MixedRoute> {
   protected tokenProvider: ITokenProvider;
   protected chainId: ChainId;
   protected blockedTokenListProvider?: ITokenListProvider;
@@ -159,8 +159,7 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
 
       if (token0Invalid || token1Invalid) {
         log.info(
-          `Dropping pool ${poolToString(pool)} because token is invalid. ${
-            pool.token0.symbol
+          `Dropping pool ${poolToString(pool)} because token is invalid. ${pool.token0.symbol
           }: ${token0Validation}, ${pool.token1.symbol}: ${token1Validation}`
         );
       }

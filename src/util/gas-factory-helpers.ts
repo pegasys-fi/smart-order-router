@@ -7,7 +7,7 @@ import {
   TradeType,
 } from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk/dist/entities';
-import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
+import { FeeAmount, Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { IV2PoolProvider } from '../providers';
@@ -21,7 +21,7 @@ import {
   MixedRouteWithValidQuote,
   SwapRoute,
   usdGasTokensByChain,
-  V2RouteWithValidQuote,
+  V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../routers';
 import { ChainId, log, WRAPPED_NATIVE_CURRENCY } from '../util';
@@ -341,7 +341,7 @@ export function initSwapRouteFromExisting(
     : TradeType.EXACT_INPUT;
   const routesWithValidQuote = swapRoute.route.map((route) => {
     switch (route.protocol) {
-      case Protocol.V2:
+      case Protocol.V3:
         return new V3RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
@@ -368,7 +368,7 @@ export function initSwapRouteFromExisting(
           v3PoolProvider: v3PoolProvider,
         });
       case Protocol.V1:
-        return new V2RouteWithValidQuote({
+        return new V1RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
             route.amount.numerator,
@@ -435,10 +435,10 @@ export function initSwapRouteFromExisting(
     blockNumber: BigNumber.from(swapRoute.blockNumber),
     methodParameters: swapRoute.methodParameters
       ? ({
-          calldata: swapRoute.methodParameters.calldata,
-          value: swapRoute.methodParameters.value,
-          to: swapRoute.methodParameters.to,
-        } as MethodParameters)
+        calldata: swapRoute.methodParameters.calldata,
+        value: swapRoute.methodParameters.value,
+        to: swapRoute.methodParameters.to,
+      } as MethodParameters)
       : undefined,
     simulationStatus: swapRoute.simulationStatus,
   };

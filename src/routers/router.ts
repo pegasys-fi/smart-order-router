@@ -13,13 +13,13 @@ import {
   TradeType,
 } from '@pollum-io/sdk-core';
 import { SwapOptions as UniversalRouterSwapOptions } from '@pollum-io/universal-router-sdk';
-import { Route as V2RouteRaw } from '@pollum-io/v1-sdk';
+import { Route as V1RouteRaw } from '@pollum-io/v1-sdk';
 import {
   Pool,
   Position,
   MethodParameters as SDKMethodParameters,
   Route as V3RouteRaw,
-} from '@pollum-io/v2-sdk';
+} from '@pollum-io/v3-sdk';
 
 import { SimulationStatus } from '../providers';
 import { CurrencyAmount } from '../util/amounts';
@@ -27,9 +27,9 @@ import { CurrencyAmount } from '../util/amounts';
 import { RouteWithValidQuote } from './alpha-router';
 
 export class V3Route extends V3RouteRaw<Token, Token> {
-  protocol: Protocol.V2 = Protocol.V2;
+  protocol: Protocol.V3 = Protocol.V3;
 }
-export class V2Route extends V2RouteRaw<Token, Token> {
+export class V1Route extends V1RouteRaw<Token, Token> {
   protocol: Protocol.V1 = Protocol.V1;
 }
 export class MixedRoute extends MixedRouteSDK<Token, Token> {
@@ -147,13 +147,13 @@ export type SwapOptionsSwapRouter02 = {
     s: string;
   } & (
     | {
-        amount: string;
-        deadline: string;
-      }
+      amount: string;
+      deadline: string;
+    }
     | {
-        nonce: string;
-        expiry: string;
-      }
+      nonce: string;
+      expiry: string;
+    }
   );
 };
 

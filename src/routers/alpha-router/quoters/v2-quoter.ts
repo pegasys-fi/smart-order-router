@@ -19,10 +19,10 @@ import {
   MetricLoggerUnit,
   routeToString,
 } from '../../../util';
-import { V2Route } from '../../router';
+import { V1Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
-import { V2RouteWithValidQuote } from '../entities';
-import { computeAllV2Routes } from '../functions/compute-all-routes';
+import { V1RouteWithValidQuote } from '../entities';
+import { computeAllV1Routes } from '../functions/compute-all-routes';
 import {
   CandidatePoolsBySelectionCriteria,
   getV2CandidatePools,
@@ -33,7 +33,7 @@ import { BaseQuoter } from './base-quoter';
 import { GetQuotesResult } from './model/results/get-quotes-result';
 import { GetRoutesResult } from './model/results/get-routes-result';
 
-export class V2Quoter extends BaseQuoter<V2Route> {
+export class V2Quoter extends BaseQuoter<V1Route> {
   protected v2SubgraphProvider: IV2SubgraphProvider;
   protected v2PoolProvider: IV2PoolProvider;
   protected v2QuoteProvider: IV2QuoteProvider;
@@ -66,7 +66,7 @@ export class V2Quoter extends BaseQuoter<V2Route> {
     tokenOut: Token,
     tradeType: TradeType,
     routingConfig: AlphaRouterConfig
-  ): Promise<GetRoutesResult<V2Route>> {
+  ): Promise<GetRoutesResult<V1Route>> {
     // Fetch all the pools that we will consider routing via. There are thousands
     // of pools, so we filter them to a set of candidate pools that we expect will
     // result in good prices.
@@ -112,7 +112,7 @@ export class V2Quoter extends BaseQuoter<V2Route> {
 
     // Given all our candidate pools, compute all the possible ways to route from tokenIn to tokenOut.
     const { maxSwapsPerPath } = routingConfig;
-    const routes = computeAllV2Routes(
+    const routes = computeAllV1Routes(
       tokenIn,
       tokenOut,
       pools,
@@ -126,19 +126,19 @@ export class V2Quoter extends BaseQuoter<V2Route> {
   }
 
   public async getQuotes(
-    routes: V2Route[],
+    routes: V1Route[],
     amounts: CurrencyAmount[],
     percents: number[],
     quoteToken: Token,
     tradeType: TradeType,
     _routingConfig: AlphaRouterConfig,
     candidatePools?: CandidatePoolsBySelectionCriteria,
-    _gasModel?: IGasModel<V2RouteWithValidQuote>,
+    _gasModel?: IGasModel<V1RouteWithValidQuote>,
     gasPriceWei?: BigNumber
   ): Promise<GetQuotesResult> {
     log.info('Starting to get V2 quotes');
     if (gasPriceWei === undefined) {
-      throw new Error('GasPriceWei for V2Routes is required to getQuotes');
+      throw new Error('GasPriceWei for V1Routes is required to getQuotes');
     }
     if (routes.length == 0) {
       return { routesWithValidQuotes: [], candidatePools };
@@ -199,7 +199,7 @@ export class V2Quoter extends BaseQuoter<V2Route> {
           continue;
         }
 
-        const routeWithValidQuote = new V2RouteWithValidQuote({
+        const routeWithValidQuote = new V1RouteWithValidQuote({
           route,
           rawQuote: quote,
           amount,

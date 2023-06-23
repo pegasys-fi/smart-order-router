@@ -1,5 +1,5 @@
 import { Token } from '@pollum-io/sdk-core';
-import { FACTORY_ADDRESS } from '@pollum-io/v2-sdk';
+import { FACTORY_ADDRESS } from '@pollum-io/v3-sdk';
 
 import { ChainId, NETWORKS_WITH_SAME_UNISWAP_ADDRESSES } from './chains';
 

@@ -5,12 +5,12 @@ import {
   MixedRouteSDK,
   Protocol,
 } from '@pollum-io/router-sdk';
-import { encodeRouteToPath } from '@pollum-io/v2-sdk';
+import { encodeRouteToPath } from '@pollum-io/v3-sdk';
 import retry, { Options as RetryOptions } from 'async-retry';
 import _ from 'lodash';
 import stats from 'stats-lite';
 
-import { MixedRoute, V2Route, V3Route } from '../routers/router';
+import { MixedRoute, V1Route, V3Route } from '../routers/router';
 import { IMixedRouteQuoterV1__factory } from '../types/other/factories/IMixedRouteQuoterV1__factory';
 import { IQuoterV2__factory } from '../types/v3/factories/IQuoterV2__factory';
 import { ChainId, metric, MetricLoggerUnit } from '../util';
@@ -85,7 +85,7 @@ export type QuoteRetryOptions = RetryOptions;
 /**
  * The V3 route and a list of quotes for that route.
  */
-export type RouteWithQuotes<TRoute extends V3Route | V2Route | MixedRoute> = [
+export type RouteWithQuotes<TRoute extends V3Route | V1Route | MixedRoute> = [
   TRoute,
   AmountQuote[]
 ];
@@ -127,7 +127,7 @@ type QuoteBatchState = QuoteBatchSuccess | QuoteBatchFailed | QuoteBatchPending;
 export interface IOnChainQuoteProvider {
   /**
    * For every route, gets an exactIn quotes for every amount provided.
-   * @notice While passing in exactIn V2Routes is supported, we recommend using the V2QuoteProvider to compute off chain quotes for V2 whenever possible
+   * @notice While passing in exactIn V1Routes is supported, we recommend using the V2QuoteProvider to compute off chain quotes for V2 whenever possible
    *
    * @param amountIns The amounts to get quotes for.
    * @param routes The routes to get quotes for.
@@ -135,7 +135,7 @@ export interface IOnChainQuoteProvider {
    * @returns For each route returns a RouteWithQuotes object that contains all the quotes.
    * @returns The blockNumber used when generating the quotes.
    */
-  getQuotesManyExactIn<TRoute extends V3Route | V2Route | MixedRoute>(
+  getQuotesManyExactIn<TRoute extends V3Route | V1Route | MixedRoute>(
     amountIns: CurrencyAmount[],
     routes: TRoute[],
     providerConfig?: ProviderConfig
@@ -291,7 +291,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
       rollback: { enabled: false },
     },
     protected quoterAddressOverride?: string
-  ) {}
+  ) { }
 
   private getQuoterAddress(useMixedRouteQuoter: boolean): string {
     if (this.quoterAddressOverride) {
@@ -310,7 +310,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
   }
 
   public async getQuotesManyExactIn<
-    TRoute extends V3Route | V2Route | MixedRoute
+    TRoute extends V3Route | V1Route | MixedRoute
   >(
     amountIns: CurrencyAmount[],
     routes: TRoute[],
@@ -344,7 +344,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
   }
 
   private async getQuotesManyData<
-    TRoute extends V3Route | V2Route | MixedRoute
+    TRoute extends V3Route | V1Route | MixedRoute
   >(
     amounts: CurrencyAmount[],
     routes: TRoute[],
@@ -376,16 +376,16 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
     const inputs: [string, string][] = _(routes)
       .flatMap((route) => {
         const encodedRoute =
-          route.protocol === Protocol.V2
+          route.protocol === Protocol.V3
             ? encodeRouteToPath(
-                route,
-                functionName == 'quoteExactOutput' // For exactOut must be true to ensure the routes are reversed.
-              )
+              route,
+              functionName == 'quoteExactOutput' // For exactOut must be true to ensure the routes are reversed.
+            )
             : encodeMixedRouteToPath(
-                route instanceof V2Route
-                  ? new MixedRouteSDK(route.pairs, route.input, route.output)
-                  : route
-              );
+              route instanceof V1Route
+                ? new MixedRouteSDK(route.pairs, route.input, route.output)
+                : route
+            );
         const routeInputs: [string, string][] = amounts.map((amount) => [
           encodedRoute,
           `0x${amount.quotient.toString(16)}`,
@@ -406,15 +406,13 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
     });
 
     log.info(
-      `About to get ${
-        inputs.length
+      `About to get ${inputs.length
       } quotes in chunks of ${normalizedChunk} [${_.map(
         inputsChunked,
         (i) => i.length
-      ).join(',')}] ${
-        gasLimitOverride
-          ? `with a gas limit override of ${gasLimitOverride}`
-          : ''
+      ).join(',')}] ${gasLimitOverride
+        ? `with a gas limit override of ${gasLimitOverride}`
+        : ''
       } and block number: ${await providerConfig.blockNumber} [Original before offset: ${originalBlockNumber}].`
     );
 
@@ -516,8 +514,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
                     status: 'failed',
                     inputs,
                     reason: new ProviderTimeoutError(
-                      `Req ${idx}/${quoteStates.length}. Request had ${
-                        inputs.length
+                      `Req ${idx}/${quoteStates.length}. Request had ${inputs.length
                       } inputs. ${err.message.slice(0, 500)}`
                     ),
                   } as QuoteBatchFailed;
@@ -619,14 +616,13 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
                   !blockHeaderRolledBack
                 ) {
                   log.info(
-                    `Attempt ${attemptNumber}. Have failed due to block header ${
-                      blockHeaderRetryAttemptNumber - 1
+                    `Attempt ${attemptNumber}. Have failed due to block header ${blockHeaderRetryAttemptNumber - 1
                     } times. Rolling back block number by ${rollbackBlockOffset} for next retry`
                   );
                   providerConfig.blockNumber = providerConfig.blockNumber
                     ? (await providerConfig.blockNumber) + rollbackBlockOffset
                     : (await this.provider.getBlockNumber()) +
-                      rollbackBlockOffset;
+                    rollbackBlockOffset;
 
                   retryAll = true;
                   blockHeaderRolledBack = true;
@@ -797,10 +793,8 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
       .value();
 
     log.info(
-      `Got ${successfulQuotes.length} successful quotes, ${
-        failedQuotes.length
-      } failed quotes. Took ${
-        finalAttemptNumber - 1
+      `Got ${successfulQuotes.length} successful quotes, ${failedQuotes.length
+      } failed quotes. Took ${finalAttemptNumber - 1
       } attempt loops. Total calls made to provider: ${totalCallsMade}. Have retried for timeout: ${haveRetriedForTimeout}`
     );
 
@@ -840,7 +834,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
     return [successfulQuoteStates, failedQuoteStates, pendingQuoteStates];
   }
 
-  private processQuoteResults<TRoute extends V3Route | V2Route | MixedRoute>(
+  private processQuoteResults<TRoute extends V3Route | V1Route | MixedRoute>(
     quoteResults: Result<[BigNumber, BigNumber[], number[], BigNumber]>[],
     routes: TRoute[],
     amounts: CurrencyAmount[]
@@ -994,16 +988,16 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
    * Throw an error for incorrect routes / function combinations
    * @param routes Any combination of V3, V2, and Mixed routes.
    * @param functionName
-   * @param useMixedRouteQuoter true if there are ANY V2Routes or MixedRoutes in the routes parameter
+   * @param useMixedRouteQuoter true if there are ANY V1Routes or MixedRoutes in the routes parameter
    */
   protected validateRoutes(
-    routes: (V3Route | V2Route | MixedRoute)[],
+    routes: (V3Route | V1Route | MixedRoute)[],
     functionName: string,
     useMixedRouteQuoter: boolean
   ) {
     /// We do not send any V3Routes to new qutoer becuase it is not deployed on chains besides mainnet
     if (
-      routes.some((route) => route.protocol === Protocol.V2) &&
+      routes.some((route) => route.protocol === Protocol.V3) &&
       useMixedRouteQuoter
     ) {
       throw new Error(`Cannot use mixed route quoter with V3 routes`);

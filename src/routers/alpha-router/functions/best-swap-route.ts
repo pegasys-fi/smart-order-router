@@ -346,7 +346,7 @@ export async function getBestSwapRouteBy(
 
           if (HAS_L1_FEE.includes(chainId)) {
             const onlyV3Routes = curRoutesNew.every(
-              (route) => route.protocol == Protocol.V2
+              (route) => route.protocol == Protocol.V3
             );
 
             if (gasModel == undefined || !onlyV3Routes) {
@@ -443,7 +443,7 @@ export async function getBestSwapRouteBy(
   if (HAS_L1_FEE.includes(chainId)) {
     // ensure the gasModel exists and that the swap route is a v3 only route
     const onlyV3Routes = bestSwap.every(
-      (route) => route.protocol == Protocol.V2
+      (route) => route.protocol == Protocol.V3
     );
 
     if (gasModel == undefined || !onlyV3Routes) {

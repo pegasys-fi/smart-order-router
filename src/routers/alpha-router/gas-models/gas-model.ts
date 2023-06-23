@@ -21,7 +21,7 @@ import { ChainId } from '../../../util/chains';
 import {
   MixedRouteWithValidQuote,
   RouteWithValidQuote,
-  V2RouteWithValidQuote,
+  V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../entities/route-with-valid-quote';
 
@@ -48,8 +48,8 @@ export type BuildOnChainGasModelFactoryType = {
   quoteToken: Token;
   v2poolProvider: IV2PoolProvider;
   l2GasDataProvider?:
-    | IL2GasDataProvider<OptimismGasData>
-    | IL2GasDataProvider<ArbitrumGasData>;
+  | IL2GasDataProvider<OptimismGasData>
+  | IL2GasDataProvider<ArbitrumGasData>;
 };
 
 export type BuildV2GasModelFactoryType = {
@@ -101,7 +101,7 @@ export abstract class IV2GasModelFactory {
     gasPriceWei,
     poolProvider,
     token,
-  }: BuildV2GasModelFactoryType): Promise<IGasModel<V2RouteWithValidQuote>>;
+  }: BuildV2GasModelFactoryType): Promise<IGasModel<V1RouteWithValidQuote>>;
 }
 
 /**

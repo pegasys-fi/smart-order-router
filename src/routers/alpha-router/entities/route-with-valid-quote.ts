@@ -1,14 +1,14 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Protocol } from '@pollum-io/router-sdk';
 import { Token, TradeType } from '@pollum-io/sdk-core';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import { IV3PoolProvider } from '../../../providers/v3/pool-provider';
 import { CurrencyAmount } from '../../../util/amounts';
 import { routeToString } from '../../../util/routes';
-import { MixedRoute, V2Route, V3Route } from '../../router';
+import { MixedRoute, V1Route, V3Route } from '../../router';
 import { IGasModel } from '../gas-models/gas-model';
 
 /**
@@ -20,7 +20,7 @@ import { IGasModel } from '../gas-models/gas-model';
  * @template Route
  */
 export interface IRouteWithValidQuote<
-  Route extends V3Route | V2Route | MixedRoute
+  Route extends V3Route | V1Route | MixedRoute
 > {
   amount: CurrencyAmount;
   percent: number;
@@ -38,12 +38,12 @@ export interface IRouteWithValidQuote<
 }
 
 // Discriminated unions on protocol field to narrow types.
-export type IV2RouteWithValidQuote = {
+export type IV1RouteWithValidQuote = {
   protocol: Protocol.V1;
-} & IRouteWithValidQuote<V2Route>;
+} & IRouteWithValidQuote<V1Route>;
 
 export type IV3RouteWithValidQuote = {
-  protocol: Protocol.V2;
+  protocol: Protocol.V3;
 } & IRouteWithValidQuote<V3Route>;
 
 export type IMixedRouteWithValidQuote = {
@@ -51,16 +51,16 @@ export type IMixedRouteWithValidQuote = {
 } & IRouteWithValidQuote<MixedRoute>;
 
 export type RouteWithValidQuote =
-  | V2RouteWithValidQuote
+  | V1RouteWithValidQuote
   | V3RouteWithValidQuote
   | MixedRouteWithValidQuote;
 
-export type V2RouteWithValidQuoteParams = {
+export type V1RouteWithValidQuoteParams = {
   amount: CurrencyAmount;
   rawQuote: BigNumber;
   percent: number;
-  route: V2Route;
-  gasModel: IGasModel<V2RouteWithValidQuote>;
+  route: V1Route;
+  gasModel: IGasModel<V1RouteWithValidQuote>;
   quoteToken: Token;
   tradeType: TradeType;
   v2PoolProvider: IV2PoolProvider;
@@ -71,9 +71,9 @@ export type V2RouteWithValidQuoteParams = {
  * (exact in or exact out), the quote itself, and gas estimates.
  *
  * @export
- * @class V2RouteWithValidQuote
+ * @class V1RouteWithValidQuote
  */
-export class V2RouteWithValidQuote implements IV2RouteWithValidQuote {
+export class V1RouteWithValidQuote implements IV1RouteWithValidQuote {
   public readonly protocol = Protocol.V1;
   public amount: CurrencyAmount;
   // The BigNumber representing the quote.
@@ -81,9 +81,9 @@ export class V2RouteWithValidQuote implements IV2RouteWithValidQuote {
   public quote: CurrencyAmount;
   public quoteAdjustedForGas: CurrencyAmount;
   public percent: number;
-  public route: V2Route;
+  public route: V1Route;
   public quoteToken: Token;
-  public gasModel: IGasModel<V2RouteWithValidQuote>;
+  public gasModel: IGasModel<V1RouteWithValidQuote>;
   public gasEstimate: BigNumber;
   public gasCostInToken: CurrencyAmount;
   public gasCostInUSD: CurrencyAmount;
@@ -108,7 +108,7 @@ export class V2RouteWithValidQuote implements IV2RouteWithValidQuote {
     quoteToken,
     tradeType,
     v2PoolProvider,
-  }: V2RouteWithValidQuoteParams) {
+  }: V1RouteWithValidQuoteParams) {
     this.amount = amount;
     this.rawQuote = rawQuote;
     this.quote = CurrencyAmount.fromRawAmount(quoteToken, rawQuote.toString());
@@ -166,7 +166,7 @@ export type V3RouteWithValidQuoteParams = {
  * @class V3RouteWithValidQuote
  */
 export class V3RouteWithValidQuote implements IV3RouteWithValidQuote {
-  public readonly protocol = Protocol.V2;
+  public readonly protocol = Protocol.V3;
   public amount: CurrencyAmount;
   public rawQuote: BigNumber;
   public quote: CurrencyAmount;

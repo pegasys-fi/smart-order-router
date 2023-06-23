@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Token } from '@pollum-io/sdk-core';
-import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
+import { FeeAmount, Pool } from '@pollum-io/v3-sdk';
 import JSBI from 'jsbi';
 import _ from 'lodash';
 
@@ -53,7 +53,7 @@ export class StaticV3SubgraphProvider implements IV3SubgraphProvider {
   constructor(
     private chainId: ChainId,
     private poolProvider: IV3PoolProvider
-  ) {}
+  ) { }
 
   public async getPools(
     tokenIn?: Token,

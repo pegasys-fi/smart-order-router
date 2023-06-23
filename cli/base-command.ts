@@ -5,7 +5,7 @@ import { Command, flags } from '@oclif/command';
 import { ParserOutput } from '@oclif/parser/lib/parse';
 import DEFAULT_TOKEN_LIST from '@pollum-io/default-token-list';
 import { Currency, CurrencyAmount, Token } from '@pollum-io/sdk-core';
-import { MethodParameters } from '@pollum-io/v2-sdk';
+import { MethodParameters } from '@pollum-io/v3-sdk';
 import bunyan, { default as Logger } from 'bunyan';
 import bunyanDebugStream from 'bunyan-debug-stream';
 import _ from 'lodash';
