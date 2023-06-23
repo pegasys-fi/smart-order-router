@@ -2,7 +2,7 @@ import { Protocol } from '@pollum-io/router-sdk';
 
 export const TO_PROTOCOL = (protocol: string): Protocol => {
   switch (protocol.toLowerCase()) {
-    case 'v2':
+    case 'v3':
       return Protocol.V3;
     case 'v1':
       return Protocol.V1;
