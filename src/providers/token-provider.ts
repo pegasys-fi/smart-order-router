@@ -35,28 +35,28 @@ export type TokenAccessor = {
 
 export const USDC_ROLLUX = new Token(
   ChainId.ROLLUX,
-  '0xdBB59E294A93487822d1d7e164609Cd59d396fb5',
+  '0x368433CaC2A0B8D76E64681a9835502a1f2A8A30',
   6,
   'USDC',
   'USD//C'
 );
 export const USDT_ROLLUX = new Token(
   ChainId.ROLLUX,
-  '0x4DFc340487bbec780bA8458e614b732d7226AE8f',
+  '0x28c9c7Fb3fE3104d2116Af26cC8eF7905547349c',
   6,
   'USDT',
   'Tether USD'
 );
 export const DAI_ROLLUX = new Token(
   ChainId.ROLLUX,
-  '0x5de737495Fe261cc9d6D32E00196d5e4ef43594D',
+  '0x5B0aC6194499621630ddebb30c4aBE37037b30Ec',
   18,
   'DAI',
   'Dai Stablecoin'
 );
 export const PSYS_ROLLUX = new Token(
   ChainId.ROLLUX,
-  '0x8e59ED2DF847Ad3d19624480Db5B2B3Ba27fC9a8',
+  '0x48023b16c3e81AA7F6eFFbdEB35Bb83f4f31a8fd',
   18,
   'PSYS',
   'Pegasys'
@@ -96,7 +96,7 @@ export class TokenProvider implements ITokenProvider {
   constructor(
     private chainId: ChainId,
     protected multicall2Provider: IMulticallProvider
-  ) {}
+  ) { }
 
   public async getTokens(
     _addresses: string[],
@@ -166,10 +166,8 @@ export class TokenProvider implements ITokenProvider {
       }
 
       log.info(
-        `Got token symbol and decimals for ${
-          Object.values(addressToToken).length
-        } out of ${addresses.length} tokens on-chain ${
-          providerConfig ? `as of: ${providerConfig?.blockNumber}` : ''
+        `Got token symbol and decimals for ${Object.values(addressToToken).length
+        } out of ${addresses.length} tokens on-chain ${providerConfig ? `as of: ${providerConfig?.blockNumber}` : ''
         }`
       );
     }
