@@ -37,8 +37,8 @@ type RawV2SubgraphPool = {
 };
 
 const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
-  // [ChainId.MAINNET]:
-  //   'https://api.thegraph.com/subgraphs/name/ianlapham/uniswapv2',
+  [ChainId.ROLLUX]:
+    'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys',
 };
 
 const threshold = 0.025;
