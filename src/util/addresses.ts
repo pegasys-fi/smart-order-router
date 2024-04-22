@@ -19,7 +19,7 @@ export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
 };
 
 export const SWAP_ROUTER_02_ADDRESSES = (_chainId: number) => {
-  return '0xD55f9d837290079DB221C827b43529b4053FBBc6';
+  return '0x0D38D4b4E53ca671b8AF722F71FCf3666a971BC6';
 };
 
 export const OVM_GASPRICE_ADDRESS =
