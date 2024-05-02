@@ -32,13 +32,13 @@ type RawV2SubgraphPool = {
     id: string;
   };
   totalSupply: string;
-  trackedReserveETH: string;
+  trackedReserveSYS: string;
   reserveUSD: string;
 };
 
 const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
-  // [ChainId.MAINNET]:
-  //   'https://api.thegraph.com/subgraphs/name/ianlapham/uniswapv2',
+  [ChainId.ROLLUX]:
+    'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys',
 };
 
 const threshold = 0.025;
@@ -96,7 +96,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
           token0 { id, symbol }
           token1 { id, symbol }
           totalSupply
-          trackedReserveETH
+          trackedReserveSYS
           reserveUSD
         }
       }
@@ -105,9 +105,10 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
     let pools: RawV2SubgraphPool[] = [];
 
     log.info(
-      `Getting V2 pools from the subgraph with page size ${this.pageSize}${providerConfig?.blockNumber
-        ? ` as of block ${providerConfig?.blockNumber}`
-        : ''
+      `Getting V2 pools from the subgraph with page size ${this.pageSize}${
+        providerConfig?.blockNumber
+          ? ` as of block ${providerConfig?.blockNumber}`
+          : ''
       }.`
     );
 
@@ -203,7 +204,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
         return (
           pool.token0.id == FEI ||
           pool.token1.id == FEI ||
-          parseFloat(pool.trackedReserveETH) > threshold
+          parseFloat(pool.trackedReserveSYS) > threshold
         );
       })
       .map((pool) => {
@@ -217,7 +218,7 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
             id: pool.token1.id.toLowerCase(),
           },
           supply: parseFloat(pool.totalSupply),
-          reserve: parseFloat(pool.trackedReserveETH),
+          reserve: parseFloat(pool.trackedReserveSYS),
           reserveUSD: parseFloat(pool.reserveUSD),
         };
       });

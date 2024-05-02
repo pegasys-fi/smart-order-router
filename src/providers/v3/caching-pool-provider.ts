@@ -1,5 +1,5 @@
 import { Token } from '@pollum-io/sdk-core';
-import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
+import { FeeAmount, Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { ChainId } from '../../util/chains';

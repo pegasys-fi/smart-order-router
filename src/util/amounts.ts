@@ -3,7 +3,7 @@ import {
   Currency,
   CurrencyAmount as CurrencyAmountRaw,
 } from '@pollum-io/sdk-core';
-import { FeeAmount } from '@pollum-io/v2-sdk';
+import { FeeAmount } from '@pollum-io/v3-sdk';
 import JSBI from 'jsbi';
 
 export class CurrencyAmount extends CurrencyAmountRaw<Currency> { }

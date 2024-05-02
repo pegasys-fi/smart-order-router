@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Logger } from '@ethersproject/logger';
 import { SwapRouter, Trade } from '@pollum-io/router-sdk';
 import { Currency, Token, TradeType } from '@pollum-io/sdk-core';
-import { FeeAmount, MethodParameters, Pool, Route } from '@pollum-io/v2-sdk';
+import { FeeAmount, MethodParameters, Pool, Route } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { IOnChainQuoteProvider, RouteWithQuotes } from '../../providers';
@@ -498,9 +498,9 @@ export class LegacyRouter {
       );
 
       return new Trade({
-        v2Routes: [
+        v3Routes: [
           {
-            routev2: routeCurrency,
+            routev3: routeCurrency,
             inputAmount: amountCurrency,
             outputAmount: quoteCurrency,
           },
@@ -528,9 +528,9 @@ export class LegacyRouter {
       );
 
       return new Trade({
-        v2Routes: [
+        v3Routes: [
           {
-            routev2: routeCurrency,
+            routev3: routeCurrency,
             inputAmount: quoteCurrency,
             outputAmount: amountCurrency,
           },

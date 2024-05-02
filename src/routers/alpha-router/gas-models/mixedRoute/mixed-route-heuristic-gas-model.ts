@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { partitionMixedRouteByProtocol } from '@pollum-io/router-sdk';
 import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 import JSBI from 'jsbi';
 import _ from 'lodash';
 

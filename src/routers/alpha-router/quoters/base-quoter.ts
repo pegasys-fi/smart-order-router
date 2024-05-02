@@ -1,12 +1,17 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Currency, Token, TradeType } from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
-import { ITokenListProvider, ITokenProvider, ITokenValidatorProvider, TokenValidationResult } from '../../../providers';
+import {
+  ITokenListProvider,
+  ITokenProvider,
+  ITokenValidatorProvider,
+  TokenValidationResult,
+} from '../../../providers';
 import { ChainId, CurrencyAmount, log, poolToString } from '../../../util';
-import { MixedRoute, V2Route, V3Route } from '../../router';
+import { MixedRoute, V1Route, V3Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
 import { RouteWithValidQuote } from '../entities/route-with-valid-quote';
 import { CandidatePoolsBySelectionCriteria } from '../functions/get-candidate-pools';
@@ -21,7 +26,7 @@ import { GetQuotesResult, GetRoutesResult } from './model/results';
  * @abstract
  * @template Route
  */
-export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
+export abstract class BaseQuoter<Route extends V1Route | V3Route | MixedRoute> {
   protected tokenProvider: ITokenProvider;
   protected chainId: ChainId;
   protected blockedTokenListProvider?: ITokenListProvider;
@@ -55,7 +60,7 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
     tokenOut: Token,
     tradeType: TradeType,
     routingConfig: AlphaRouterConfig
-  ): Promise<GetRoutesResult<Route>>
+  ): Promise<GetRoutesResult<Route>>;
 
   /**
    * Public method that will fetch quotes for the combination of every route and every amount.
@@ -81,7 +86,7 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
     candidatePools?: CandidatePoolsBySelectionCriteria,
     gasModel?: IGasModel<RouteWithValidQuote>,
     gasPriceWei?: BigNumber
-  ): Promise<GetQuotesResult>
+  ): Promise<GetQuotesResult>;
 
   /**
    * Public method which would first get the routes and then get the quotes.
@@ -107,8 +112,8 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
     gasModel?: IGasModel<RouteWithValidQuote>,
     gasPriceWei?: BigNumber
   ): Promise<GetQuotesResult> {
-    return this.getRoutes(tokenIn, tokenOut, tradeType, routingConfig)
-      .then((routesResult) =>
+    return this.getRoutes(tokenIn, tokenOut, tradeType, routingConfig).then(
+      (routesResult) =>
         this.getQuotes(
           routesResult.routes,
           amounts,
@@ -120,7 +125,7 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
           gasModel,
           gasPriceWei
         )
-      );
+    );
   }
 
   protected async applyTokenValidatorToPools<T extends Pool | Pair>(
@@ -138,7 +143,8 @@ export abstract class BaseQuoter<Route extends V2Route | V3Route | MixedRoute> {
 
     const tokens = _.flatMap(pools, (pool) => [pool.token0, pool.token1]);
 
-    const tokenValidationResults = await this.tokenValidatorProvider.validateTokens(tokens);
+    const tokenValidationResults =
+      await this.tokenValidatorProvider.validateTokens(tokens);
 
     const poolsFiltered = _.filter(pools, (pool: T) => {
       const token0Validation = tokenValidationResults.getValidationByToken(

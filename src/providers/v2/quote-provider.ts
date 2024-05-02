@@ -5,7 +5,7 @@ import {
   InsufficientReservesError,
 } from '@pollum-io/v1-sdk';
 
-import { V2Route } from '../../routers/router';
+import { V1Route } from '../../routers/router';
 import { CurrencyAmount } from '../../util/amounts';
 import { log } from '../../util/log';
 import { routeToString } from '../../util/routes';
@@ -16,18 +16,18 @@ export type V2AmountQuote = {
   quote: BigNumber | null;
 };
 
-export type V2RouteWithQuotes = [V2Route, V2AmountQuote[]];
+export type V1RouteWithQuotes = [V1Route, V2AmountQuote[]];
 
 export interface IV2QuoteProvider {
   getQuotesManyExactIn(
     amountIns: CurrencyAmount[],
-    routes: V2Route[]
-  ): Promise<{ routesWithQuotes: V2RouteWithQuotes[] }>;
+    routes: V1Route[]
+  ): Promise<{ routesWithQuotes: V1RouteWithQuotes[] }>;
 
   getQuotesManyExactOut(
     amountOuts: CurrencyAmount[],
-    routes: V2Route[]
-  ): Promise<{ routesWithQuotes: V2RouteWithQuotes[] }>;
+    routes: V1Route[]
+  ): Promise<{ routesWithQuotes: V1RouteWithQuotes[] }>;
 }
 
 /**
@@ -44,24 +44,24 @@ export class V2QuoteProvider implements IV2QuoteProvider {
 
   public async getQuotesManyExactIn(
     amountIns: CurrencyAmount[],
-    routes: V2Route[]
-  ): Promise<{ routesWithQuotes: V2RouteWithQuotes[] }> {
+    routes: V1Route[]
+  ): Promise<{ routesWithQuotes: V1RouteWithQuotes[] }> {
     return this.getQuotes(amountIns, routes, TradeType.EXACT_INPUT);
   }
 
   public async getQuotesManyExactOut(
     amountOuts: CurrencyAmount[],
-    routes: V2Route[]
-  ): Promise<{ routesWithQuotes: V2RouteWithQuotes[] }> {
+    routes: V1Route[]
+  ): Promise<{ routesWithQuotes: V1RouteWithQuotes[] }> {
     return this.getQuotes(amountOuts, routes, TradeType.EXACT_OUTPUT);
   }
 
   private async getQuotes(
     amounts: CurrencyAmount[],
-    routes: V2Route[],
+    routes: V1Route[],
     tradeType: TradeType
-  ): Promise<{ routesWithQuotes: V2RouteWithQuotes[] }> {
-    const routesWithQuotes: V2RouteWithQuotes[] = [];
+  ): Promise<{ routesWithQuotes: V1RouteWithQuotes[] }> {
+    const routesWithQuotes: V1RouteWithQuotes[] = [];
 
     const debugStrs: string[] = [];
     for (const route of routes) {

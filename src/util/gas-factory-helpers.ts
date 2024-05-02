@@ -1,8 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Protocol } from '@pollum-io/router-sdk';
-import { Currency, CurrencyAmount, Token, TradeType } from '@pollum-io/sdk-core';
+import {
+  Currency,
+  CurrencyAmount,
+  Token,
+  TradeType,
+} from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk/dist/entities';
-import { FeeAmount, Pool } from '@pollum-io/v2-sdk';
+import { FeeAmount, Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { IV2PoolProvider } from '../providers';
@@ -16,7 +21,7 @@ import {
   MixedRouteWithValidQuote,
   SwapRoute,
   usdGasTokensByChain,
-  V2RouteWithValidQuote,
+  V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../routers';
 import { ChainId, log, WRAPPED_NATIVE_CURRENCY } from '../util';
@@ -133,9 +138,10 @@ export async function getHighestLiquidityV3USDPool(
   ])
     .flatMap((feeAmount) => {
       const pools = [];
-
+      // console.log(feeAmount)
       for (const usdToken of usdTokens) {
         const pool = poolAccessor.getPool(wrappedCurrency, usdToken, feeAmount);
+        // console.log(pool)
         if (pool) {
           pools.push(pool);
         }
@@ -145,7 +151,7 @@ export async function getHighestLiquidityV3USDPool(
     })
     .compact()
     .value();
-
+  // console.log(pools)
   if (pools.length == 0) {
     const message = `Could not find a USD/${wrappedCurrency.symbol} pool for computing gas costs.`;
     log.error({ pools }, message);
@@ -257,11 +263,7 @@ export async function calculateGasUsed(
   const gasPriceWei = route.gasPriceWei;
   // calculate L2 to L1 security fee if relevant
   let l2toL1FeeInWei = BigNumber.from(0);
-  if (
-    [
-      ChainId.ROLLUX_TESTNET,
-    ].includes(chainId)
-  ) {
+  if ([ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM].includes(chainId)) {
     l2toL1FeeInWei = calculateOptimismToL1FeeFromCalldata(
       route.methodParameters!.calldata,
       l2GasData as OptimismGasData
@@ -339,7 +341,7 @@ export function initSwapRouteFromExisting(
     : TradeType.EXACT_INPUT;
   const routesWithValidQuote = swapRoute.route.map((route) => {
     switch (route.protocol) {
-      case Protocol.V2:
+      case Protocol.V3:
         return new V3RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
@@ -366,7 +368,7 @@ export function initSwapRouteFromExisting(
           v3PoolProvider: v3PoolProvider,
         });
       case Protocol.V1:
-        return new V2RouteWithValidQuote({
+        return new V1RouteWithValidQuote({
           amount: CurrencyAmount.fromFractionalAmount(
             route.amount.currency,
             route.amount.numerator,

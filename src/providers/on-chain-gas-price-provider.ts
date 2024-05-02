@@ -5,7 +5,8 @@ import { GasPrice, IGasPriceProvider } from './gas-price-provider';
 import { LegacyGasPriceProvider } from './legacy-gas-price-provider';
 
 const DEFAULT_EIP_1559_SUPPORTED_CHAINS = [
-  ChainId.ROLLUX_TESTNET,
+  ChainId.ROLLUX,
+  ChainId.ROLLUX_TANENBAUM,
 ];
 
 /**

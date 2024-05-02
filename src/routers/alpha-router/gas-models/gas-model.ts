@@ -3,8 +3,11 @@ import { Token } from '@pollum-io/sdk-core';
 
 import {
   DAI_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
   USDC_ROLLUX,
+  USDC_ROLLUX_TANENBAUM,
   USDT_ROLLUX,
+  USDT_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -18,15 +21,16 @@ import { ChainId } from '../../../util/chains';
 import {
   MixedRouteWithValidQuote,
   RouteWithValidQuote,
-  V2RouteWithValidQuote,
+  V1RouteWithValidQuote,
   V3RouteWithValidQuote,
 } from '../entities/route-with-valid-quote';
 
 export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX_TESTNET]: [
-    DAI_ROLLUX,
-    USDC_ROLLUX,
-    USDT_ROLLUX,
+  [ChainId.ROLLUX]: [DAI_ROLLUX, USDC_ROLLUX, USDT_ROLLUX],
+  [ChainId.ROLLUX_TANENBAUM]: [
+    DAI_ROLLUX_TANENBAUM,
+    USDC_ROLLUX_TANENBAUM,
+    USDT_ROLLUX_TANENBAUM,
   ],
 };
 
@@ -97,7 +101,7 @@ export abstract class IV2GasModelFactory {
     gasPriceWei,
     poolProvider,
     token,
-  }: BuildV2GasModelFactoryType): Promise<IGasModel<V2RouteWithValidQuote>>;
+  }: BuildV2GasModelFactoryType): Promise<IGasModel<V1RouteWithValidQuote>>;
 }
 
 /**

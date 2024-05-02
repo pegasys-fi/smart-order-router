@@ -1,10 +1,10 @@
 import { Token } from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 
 import { log } from '../../../util/log';
 import { poolToString, routeToString } from '../../../util/routes';
-import { MixedRoute, V2Route, V3Route } from '../../router';
+import { MixedRoute, V1Route, V3Route } from '../../router';
 
 export function computeAllV3Routes(
   tokenIn: Token,
@@ -23,17 +23,17 @@ export function computeAllV3Routes(
   );
 }
 
-export function computeAllV2Routes(
+export function computeAllV1Routes(
   tokenIn: Token,
   tokenOut: Token,
   pools: Pair[],
   maxHops: number
-): V2Route[] {
-  return computeAllRoutes<Pair, V2Route>(
+): V1Route[] {
+  return computeAllRoutes<Pair, V1Route>(
     tokenIn,
     tokenOut,
     (route: Pair[], tokenIn: Token, tokenOut: Token) => {
-      return new V2Route(route, tokenIn, tokenOut);
+      return new V1Route(route, tokenIn, tokenOut);
     },
     pools,
     maxHops
@@ -66,7 +66,7 @@ export function computeAllMixedRoutes(
 
 export function computeAllRoutes<
   TPool extends Pair | Pool,
-  TRoute extends V3Route | V2Route | MixedRoute
+  TRoute extends V3Route | V1Route | MixedRoute
 >(
   tokenIn: Token,
   tokenOut: Token,

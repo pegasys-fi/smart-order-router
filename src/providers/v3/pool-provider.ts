@@ -1,10 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Token } from '@pollum-io/sdk-core';
-import { computePoolAddress, FeeAmount, Pool } from '@pollum-io/v2-sdk';
+import { computePoolAddress, FeeAmount, Pool } from '@pollum-io/v3-sdk';
 import retry, { Options as RetryOptions } from 'async-retry';
 import _ from 'lodash';
 
-import { IPegasysV2PoolState__factory } from '../../types/v3/factories/IPegasysV2PoolState__factory';
+import { IPegasysV3PoolState__factory } from '../../types/v3/factories/IPegasysV3PoolState__factory';
 import { ChainId } from '../../util';
 import { V3_CORE_FACTORY_ADDRESSES } from '../../util/addresses';
 import { log } from '../../util/log';
@@ -144,7 +144,7 @@ export class V3PoolProvider implements IV3PoolProvider {
     for (let i = 0; i < sortedPoolAddresses.length; i++) {
       const slot0Result = slot0Results[i];
       const liquidityResult = liquidityResults[i];
-
+      console.log(sortedPoolAddresses[i], slot0Result, liquidityResult);
       // These properties tell us if a pool is valid and initialized or not.
       if (
         !slot0Result?.success ||
@@ -247,7 +247,7 @@ export class V3PoolProvider implements IV3PoolProvider {
         TReturn
       >({
         addresses: poolAddresses,
-        contractInterface: IPegasysV2PoolState__factory.createInterface(),
+        contractInterface: IPegasysV3PoolState__factory.createInterface(),
         functionName: functionName,
         providerConfig,
       });

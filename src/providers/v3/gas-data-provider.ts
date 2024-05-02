@@ -42,7 +42,7 @@ export class OptimismGasDataProvider
     protected multicall2Provider: IMulticallProvider,
     gasPriceAddress?: string
   ) {
-    if (chainId != ChainId.ROLLUX_TESTNET) {
+    if (chainId != ChainId.ROLLUX && chainId != ChainId.ROLLUX_TANENBAUM) {
       throw new Error('This data provider is used only on optimism networks.');
     }
     this.gasOracleAddress = gasPriceAddress ?? OVM_GASPRICE_ADDRESS;

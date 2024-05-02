@@ -1,18 +1,34 @@
 import { Protocol } from '@pollum-io/router-sdk';
 import { Token, TradeType } from '@pollum-io/sdk-core';
-import { FeeAmount } from '@pollum-io/v2-sdk';
+import { FeeAmount } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
-import { ITokenListProvider, IV2SubgraphProvider, V2SubgraphPool, } from '../../../providers';
 import {
-  USDC_ROLLUX,
-  USDT_ROLLUX,
+  ITokenListProvider,
+  IV2SubgraphProvider,
+  V2SubgraphPool,
+} from '../../../providers';
+import {
   DAI_ROLLUX,
+  DAI_ROLLUX_TANENBAUM,
   ITokenProvider,
+  USDC_ROLLUX,
+  USDC_ROLLUX_TANENBAUM,
+  USDT_ROLLUX,
+  USDT_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
-import { IV2PoolProvider, V2PoolAccessor, } from '../../../providers/v2/pool-provider';
-import { IV3PoolProvider, V3PoolAccessor, } from '../../../providers/v3/pool-provider';
-import { IV3SubgraphProvider, V3SubgraphPool, } from '../../../providers/v3/subgraph-provider';
+import {
+  IV2PoolProvider,
+  V2PoolAccessor,
+} from '../../../providers/v2/pool-provider';
+import {
+  IV3PoolProvider,
+  V3PoolAccessor,
+} from '../../../providers/v3/pool-provider';
+import {
+  IV3SubgraphProvider,
+  V3SubgraphPool,
+} from '../../../providers/v3/subgraph-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../../util';
 import { parseFeeAmount, unparseFeeAmount } from '../../../util/amounts';
 import { log } from '../../../util/log';
@@ -77,13 +93,12 @@ export type MixedRouteGetCandidatePoolsParams = {
 };
 
 const baseTokensByChain: { [chainId in ChainId]?: Token[] } = {
-  [ChainId.ROLLUX_TESTNET]: [
-    USDC_ROLLUX,
-    USDT_ROLLUX,
-    DAI_ROLLUX,
-
+  [ChainId.ROLLUX]: [USDC_ROLLUX, USDT_ROLLUX, DAI_ROLLUX],
+  [ChainId.ROLLUX_TANENBAUM]: [
+    USDC_ROLLUX_TANENBAUM,
+    USDT_ROLLUX_TANENBAUM,
+    DAI_ROLLUX_TANENBAUM,
   ],
-
 };
 
 export async function getV3CandidatePools({
@@ -257,7 +272,7 @@ export async function getV3CandidatePools({
           token1: {
             id: token1.address,
           },
-          tvlETH: 10000,
+          tvlSYS: 10000,
           tvlUSD: 10000,
         };
       }
@@ -273,10 +288,10 @@ export async function getV3CandidatePools({
   // theres no need to add more.
   let top2EthQuoteTokenPool: V3SubgraphPool[] = [];
   if (
-    (WRAPPED_NATIVE_CURRENCY[chainId]?.symbol ==
-      WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX_TESTNET]?.symbol &&
-      tokenOut.symbol != 'SYS' &&
-      tokenOut.symbol != 'WSYS')
+    WRAPPED_NATIVE_CURRENCY[chainId]?.symbol ==
+    WRAPPED_NATIVE_CURRENCY[ChainId.ROLLUX]?.symbol &&
+    tokenOut.symbol != 'SYS' &&
+    tokenOut.symbol != 'WSYS'
   ) {
     top2EthQuoteTokenPool = _(subgraphPoolsSorted)
       .filter((subgraphPool) => {
@@ -352,7 +367,10 @@ export async function getV3CandidatePools({
               subgraphPool.token1.id == secondHopId)
           );
         })
-        .slice(0, topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop)
+        .slice(
+          0,
+          topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop
+        )
         .value();
     })
     .uniqBy((pool) => pool.id)
@@ -375,7 +393,10 @@ export async function getV3CandidatePools({
               subgraphPool.token1.id == secondHopId)
           );
         })
-        .slice(0, topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop)
+        .slice(
+          0,
+          topNSecondHopForTokenAddress?.get(secondHopId) ?? topNSecondHop
+        )
         .value();
     })
     .uniqBy((pool) => pool.id)
@@ -475,7 +496,7 @@ export async function getV3CandidatePools({
   );
 
   const poolsBySelection: CandidatePoolsBySelectionCriteria = {
-    protocol: Protocol.V2,
+    protocol: Protocol.V3,
     selections: {
       topByBaseWithTokenIn,
       topByBaseWithTokenOut,
@@ -658,9 +679,9 @@ export async function getV2CandidatePools({
   // Note: we do not need to check other native currencies for the V2 Protocol
   let topByEthQuoteTokenPool: V2SubgraphPool[] = [];
   if (
-    tokenOut.symbol != 'WETH' &&
+    tokenOut.symbol != 'WSYS' &&
     tokenOut.symbol != 'WETH9' &&
-    tokenOut.symbol != 'ETH'
+    tokenOut.symbol != 'SYS'
   ) {
     topByEthQuoteTokenPool = _(subgraphPoolsSorted)
       .filter((subgraphPool) => {

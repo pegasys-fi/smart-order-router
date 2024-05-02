@@ -1,27 +1,28 @@
 import { Protocol } from '@pollum-io/router-sdk';
 import { Percent } from '@pollum-io/sdk-core';
 import { Pair } from '@pollum-io/v1-sdk';
-import { Pool } from '@pollum-io/v2-sdk';
+import { Pool } from '@pollum-io/v3-sdk';
 import _ from 'lodash';
 
 import { RouteWithValidQuote } from '../routers/alpha-router';
-import { MixedRoute, V2Route, V3Route } from '../routers/router';
+import { MixedRoute, V1Route, V3Route } from '../routers/router';
+
 import { V3_CORE_FACTORY_ADDRESSES } from './addresses';
 
 import { CurrencyAmount } from '.';
 
 export const routeToString = (
-  route: V3Route | V2Route | MixedRoute
+  route: V3Route | V1Route | MixedRoute
 ): string => {
   const routeStr = [];
   const tokens =
-    route.protocol === Protocol.V2
+    route.protocol === Protocol.V3
       ? route.tokenPath
-      : // MixedRoute and V2Route have path
+      : // MixedRoute and V1Route have path
       route.path;
   const tokenPath = _.map(tokens, (token) => `${token.symbol}`);
   const pools =
-    route.protocol === Protocol.V2 || route.protocol === Protocol.MIXED
+    route.protocol === Protocol.V3 || route.protocol === Protocol.MIXED
       ? route.pools
       : route.pairs;
   const poolFeePath = _.map(pools, (pool) => {

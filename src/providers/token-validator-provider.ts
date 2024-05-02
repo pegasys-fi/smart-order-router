@@ -95,7 +95,8 @@ export class TokenValidatorProvider implements ITokenValidatorProvider {
     }
 
     log.info(
-      `Got token validation results for ${addressesRaw.length - addresses.length
+      `Got token validation results for ${
+        addressesRaw.length - addresses.length
       } tokens from cache. Getting ${addresses.length} on-chain.`
     );
 

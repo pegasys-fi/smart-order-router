@@ -5,7 +5,7 @@ import { Command, flags } from '@oclif/command';
 import { ParserOutput } from '@oclif/parser/lib/parse';
 import DEFAULT_TOKEN_LIST from '@pollum-io/default-token-list';
 import { Currency, CurrencyAmount, Token } from '@pollum-io/sdk-core';
-import { MethodParameters } from '@pollum-io/v2-sdk';
+import { MethodParameters } from '@pollum-io/v3-sdk';
 import bunyan, { default as Logger } from 'bunyan';
 import bunyanDebugStream from 'bunyan-debug-stream';
 import _ from 'lodash';
@@ -102,7 +102,7 @@ export abstract class BaseCommand extends Command {
     chainId: flags.integer({
       char: 'c',
       required: false,
-      default: ChainId.ROLLUX_TESTNET,
+      default: ChainId.ROLLUX,
       options: CHAIN_IDS_LIST,
     }),
     tokenListURI: flags.string({
@@ -299,7 +299,7 @@ export abstract class BaseCommand extends Command {
         v2PoolProvider,
         v3PoolProvider,
         provider,
-        { [ChainId.ARBITRUM_ONE]: 1 }
+        { [ChainId.ROLLUX]: ChainId.ROLLUX }
       );
 
       const ethEstimateGasSimulator = new EthEstimateGasSimulator(

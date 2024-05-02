@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { IV2PoolProvider } from '../../../../providers/v2/pool-provider';
 import { ChainId, log, WRAPPED_NATIVE_CURRENCY } from '../../../../util';
 import { CurrencyAmount } from '../../../../util/amounts';
-import { V2RouteWithValidQuote } from '../../entities/route-with-valid-quote';
+import { V1RouteWithValidQuote } from '../../entities/route-with-valid-quote';
 import {
   BuildV2GasModelFactoryType,
   IGasModel,
@@ -47,7 +47,7 @@ export class V2HeuristicGasModelFactory extends IV2GasModelFactory {
     gasPriceWei,
     poolProvider,
     token,
-  }: BuildV2GasModelFactoryType): Promise<IGasModel<V2RouteWithValidQuote>> {
+  }: BuildV2GasModelFactoryType): Promise<IGasModel<V1RouteWithValidQuote>> {
     if (token.equals(WRAPPED_NATIVE_CURRENCY[chainId]!)) {
       const usdPool: Pair = await this.getHighestLiquidityUSDPool(
         chainId,
@@ -55,7 +55,7 @@ export class V2HeuristicGasModelFactory extends IV2GasModelFactory {
       );
 
       return {
-        estimateGasCost: (routeWithValidQuote: V2RouteWithValidQuote) => {
+        estimateGasCost: (routeWithValidQuote: V1RouteWithValidQuote) => {
           const { gasCostInEth, gasUse } = this.estimateGas(
             routeWithValidQuote,
             gasPriceWei,
@@ -101,7 +101,7 @@ export class V2HeuristicGasModelFactory extends IV2GasModelFactory {
     );
 
     return {
-      estimateGasCost: (routeWithValidQuote: V2RouteWithValidQuote) => {
+      estimateGasCost: (routeWithValidQuote: V1RouteWithValidQuote) => {
         const usdToken =
           usdPool.token0.address == WRAPPED_NATIVE_CURRENCY[chainId]!.address
             ? usdPool.token1
@@ -179,7 +179,7 @@ export class V2HeuristicGasModelFactory extends IV2GasModelFactory {
   }
 
   private estimateGas(
-    routeWithValidQuote: V2RouteWithValidQuote,
+    routeWithValidQuote: V1RouteWithValidQuote,
     gasPriceWei: BigNumber,
     chainId: ChainId
   ) {

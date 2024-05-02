@@ -1,7 +1,7 @@
 import { Logger } from '@ethersproject/logger';
 import { flags } from '@oclif/command';
 import { Currency, Ether, Fraction, Percent } from '@pollum-io/sdk-core';
-import { Position } from '@pollum-io/v2-sdk';
+import { Position } from '@pollum-io/v3-sdk';
 import dotenv from 'dotenv';
 import {
   ID_TO_CHAIN_ID,
@@ -68,11 +68,11 @@ export class QuoteToRatio extends BaseCommand {
     const chainId = ID_TO_CHAIN_ID(chainIdNumb);
     // TODO add support for polygon
     const token0: Currency =
-      token0Str == 'ETH'
+      token0Str == 'SYS'
         ? Ether.onChain(chainId)
         : tokenAccessor.getTokenByAddress(token0Str)!;
     const token1: Currency =
-      token1Str == 'ETH'
+      token1Str == 'WSYS'
         ? Ether.onChain(chainId)
         : tokenAccessor.getTokenByAddress(token1Str)!;
 

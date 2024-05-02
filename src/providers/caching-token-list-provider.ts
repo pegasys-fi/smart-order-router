@@ -29,10 +29,13 @@ export interface ITokenListProvider {
 }
 
 export class CachingTokenListProvider
-  implements ITokenProvider, ITokenListProvider {
+  implements ITokenProvider, ITokenListProvider
+{
   private CACHE_KEY = (tokenInfo: TokenInfo) =>
-    `token-list-token-${this.chainId}/${this.tokenList.name}/${this.tokenList.timestamp
-    }/${this.tokenList.version}/${tokenInfo.address.toLowerCase()}/${tokenInfo.decimals
+    `token-list-token-${this.chainId}/${this.tokenList.name}/${
+      this.tokenList.timestamp
+    }/${this.tokenList.version}/${tokenInfo.address.toLowerCase()}/${
+      tokenInfo.decimals
     }/${tokenInfo.symbol}/${tokenInfo.name}`;
 
   private chainId: ChainId;
@@ -175,8 +178,8 @@ export class CachingTokenListProvider
 
     // We consider ETH as a regular ERC20 Token throughout this package. We don't use the NativeCurrency object from the sdk.
     // When we build the calldata for swapping we insert wrapping/unwrapping as needed.
-    if (_symbol == 'ETH') {
-      symbol = 'WETH';
+    if (_symbol == 'SYS') {
+      symbol = 'WSYS';
     }
 
     if (!this.chainSymbolToTokenInfo[this.chainId.toString()]) {
@@ -202,7 +205,7 @@ export class CachingTokenListProvider
 
     const tokenInfo: TokenInfo | undefined =
       this.chainAddressToTokenInfo[this.chainId.toString()]![
-      address.toLowerCase()
+        address.toLowerCase()
       ];
 
     if (!tokenInfo) {
