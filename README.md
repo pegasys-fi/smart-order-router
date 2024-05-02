@@ -74,7 +74,7 @@ Some examples to use for manual CLI testing.
 ### Mainnet
 
 ```
-./bin/cli quote --tokenIn 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 --tokenOut 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984 --amount 1000 --exactIn --recipient 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B --protocols v2,v3
+./bin/cli quote --tokenIn 0xbc9a1bffd1bbc1fa3c145d339ce5cf9f41a64ba1 --tokenOut 0x4200000000000000000000000000000000000006 --amount 1 --exactIn --recipient 0xc84633Af14e43F00D5aaa7A47B8d0864eE6a46FB --protocols v1
 
 Best Route:
 100.00% = USDC -- 0.3% --> UNI
