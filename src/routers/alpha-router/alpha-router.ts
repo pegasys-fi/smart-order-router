@@ -344,8 +344,7 @@ export type AlphaRouterConfig = {
 export class AlphaRouter
   implements
   IRouter<AlphaRouterConfig>,
-  ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
-{
+  ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig> {
   protected chainId: ChainId;
   protected provider: BaseProvider;
   protected multicall2Provider: UniswapMulticallProvider;
@@ -513,7 +512,7 @@ export class AlphaRouter
           chainId,
           new URISubgraphProvider(
             chainId,
-            `https://cloudflare-ipfs.com/ipns/api.pegasys.fi/pools/v2/${chainName}.json`,
+            `https://cloudflare-ipfs.com/ipns/api.pegasys.fi/pools/v1/${chainName}.json`,
             undefined,
             0
           ),

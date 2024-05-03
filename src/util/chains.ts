@@ -11,7 +11,7 @@ export const SUPPORTED_CHAINS: ChainId[] = [
   ChainId.ROLLUX,
 ];
 
-export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM];
+export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX];
 
 export const HAS_L1_FEE: ChainId[] = []; //TODO: add rollux
 
