@@ -11,7 +11,9 @@ export const QUOTER_V2_ADDRESSES: AddressMap = {
   ...constructSameAddressMap('0x4aa7D3a3D8025e653886EbD5f2e9416a7b4ADe22'),
 };
 
-export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {};
+export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
+  [ChainId.ROLLUX]: '0xD8EDc12630284A057461300dE5317b148F7F8926',
+};
 
 export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
   [ChainId.ROLLUX]: '0x25DAE2f7ad027b29b4e968ecC899F8A8A0f54B2A',
