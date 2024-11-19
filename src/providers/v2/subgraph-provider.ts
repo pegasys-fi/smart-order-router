@@ -105,10 +105,9 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
     let pools: RawV2SubgraphPool[] = [];
 
     log.info(
-      `Getting V2 pools from the subgraph with page size ${this.pageSize}${
-        providerConfig?.blockNumber
-          ? ` as of block ${providerConfig?.blockNumber}`
-          : ''
+      `Getting V2 pools from the subgraph with page size ${this.pageSize}${providerConfig?.blockNumber
+        ? ` as of block ${providerConfig?.blockNumber}`
+        : ''
       }.`
     );
 
@@ -174,8 +173,8 @@ export class V2SubgraphProvider implements IV2SubgraphProvider {
         onRetry: (err, retry) => {
           if (
             this.rollback &&
-            blockNumber &&
-            _.includes(err.message, 'indexed up to')
+            blockNumber // &&
+            // _.includes(err.message, 'indexed up to')
           ) {
             blockNumber = blockNumber - 10;
             log.info(
