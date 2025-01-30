@@ -193,7 +193,7 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
       .filter(
         (pool) =>
           parseInt(pool.liquidity) > 0 ||
-          parseFloat(pool.totalValueLockedSYS) > 0.01
+          parseFloat(pool.totalValueLockedSYS) > 100
       )
       .map((pool) => {
         const { totalValueLockedSYS, totalValueLockedUSD, ...rest } = pool;
