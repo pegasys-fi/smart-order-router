@@ -41,7 +41,7 @@ const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
     'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys',
 };
 
-const threshold = 100;
+const threshold = 500;
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.
 
