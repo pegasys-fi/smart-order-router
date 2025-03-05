@@ -1,17 +1,20 @@
 import { Ether, NativeCurrency, Token } from '@pollum-io/sdk-core';
 
+
 export enum ChainId {
   ROLLUX_TANENBAUM = 57000,
   ROLLUX = 570,
+  ZKSYS_TANENBAUM = 5701
 }
 
 // WIP: Gnosis, Moonbeam
 export const SUPPORTED_CHAINS: ChainId[] = [
   ChainId.ROLLUX_TANENBAUM,
   ChainId.ROLLUX,
+  ChainId.ZKSYS_TANENBAUM
 ];
 
-export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX];
+export const V2_SUPPORTED = [ChainId.ROLLUX_TANENBAUM, ChainId.ROLLUX, ChainId.ZKSYS_TANENBAUM];
 
 export const HAS_L1_FEE: ChainId[] = []; //TODO: add rollux
 
@@ -26,6 +29,8 @@ export const ID_TO_CHAIN_ID = (id: number): ChainId => {
       return ChainId.ROLLUX;
     case 57000:
       return ChainId.ROLLUX_TANENBAUM;
+    case 5701:
+      return ChainId.ZKSYS_TANENBAUM
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -34,6 +39,7 @@ export const ID_TO_CHAIN_ID = (id: number): ChainId => {
 export enum ChainName {
   ROLLUX = 'rollux',
   ROLLUX_TANENBAUM = 'rollux-tanenbaum',
+  ZKSYS_TANENBAUM = 'zksys-tanenbaum'
 }
 
 export enum NativeCurrencyName {
@@ -51,11 +57,17 @@ export const NATIVE_NAMES_BY_ID: { [chainId: number]: string[] } = {
     'Syscoin',
     '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   ],
+  [ChainId.ZKSYS_TANENBAUM]: [
+    'SYS',
+    'Syscoin',
+    '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  ],
 };
 
 export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
   [ChainId.ROLLUX]: NativeCurrencyName.SYS,
   [ChainId.ROLLUX_TANENBAUM]: NativeCurrencyName.SYS,
+  [ChainId.ZKSYS_TANENBAUM]: NativeCurrencyName.SYS,
 };
 
 export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
@@ -64,6 +76,8 @@ export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
       return ChainName.ROLLUX;
     case 57000:
       return ChainName.ROLLUX_TANENBAUM;
+    case 5701:
+      return ChainName.ZKSYS_TANENBAUM;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -79,6 +93,8 @@ export const ID_TO_PROVIDER = (id: ChainId): string => {
       return 'https://rpc.rollux.com/'!;
     case ChainId.ROLLUX_TANENBAUM:
       return 'https://rpc-tanenbaum.rollux.com/'!;
+    case ChainId.ZKSYS_TANENBAUM:
+      return 'https://rpc-test-zk.syscoin.org/'!;
 
     default:
       throw new Error(`Chain id: ${id} not supported`);
@@ -97,6 +113,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainId]: Token } = {
   [ChainId.ROLLUX_TANENBAUM]: new Token(
     ChainId.ROLLUX_TANENBAUM,
     '0x4200000000000000000000000000000000000006',
+    18,
+    'WSYS',
+    'Wrapped Syscoin'
+  ),
+  [ChainId.ZKSYS_TANENBAUM]: new Token(
+    ChainId.ZKSYS_TANENBAUM,
+    '0x8BBb86D74e11C388913000f598A8C0F6B9e35055',
     18,
     'WSYS',
     'Wrapped Syscoin'

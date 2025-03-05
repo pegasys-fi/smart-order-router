@@ -1355,7 +1355,7 @@ export class AlphaRouter
       protocols.includes(Protocol.MIXED) ||
       (noProtocolsSpecified && v2SupportedInChain);
     const mixedProtocolAllowed =
-      [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM].includes(this.chainId) &&
+      [ChainId.ROLLUX, ChainId.ROLLUX_TANENBAUM, ChainId.ZKSYS_TANENBAUM].includes(this.chainId) &&
       tradeType === TradeType.EXACT_INPUT;
 
     const quotePromises: Promise<GetQuotesResult>[] = [];

@@ -14,6 +14,8 @@ import {
   ITokenProvider,
   USDC_ROLLUX,
   USDC_ROLLUX_TANENBAUM,
+  USDC_ZKSYS_TANENBAUM,
+  USDT_ZKSYS_TANENBAUM,
   USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
 } from '../../../providers/token-provider';
@@ -99,6 +101,7 @@ const baseTokensByChain: { [chainId in ChainId]?: Token[] } = {
     USDT_ROLLUX_TANENBAUM,
     DAI_ROLLUX_TANENBAUM,
   ],
+  [ChainId.ZKSYS_TANENBAUM]: [USDC_ZKSYS_TANENBAUM, USDT_ZKSYS_TANENBAUM,],
 };
 
 export async function getV3CandidatePools({

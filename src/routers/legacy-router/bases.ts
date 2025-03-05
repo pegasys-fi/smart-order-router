@@ -7,8 +7,10 @@ import {
   ITokenProvider,
   USDC_ROLLUX,
   USDC_ROLLUX_TANENBAUM,
+  USDC_ZKSYS_TANENBAUM,
   USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
+  USDT_ZKSYS_TANENBAUM,
 } from '../../providers/token-provider';
 import { ChainId, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 
@@ -31,6 +33,11 @@ export const BASES_TO_CHECK_TRADES_AGAINST = (
       USDC_ROLLUX_TANENBAUM,
       USDT_ROLLUX_TANENBAUM,
       DAI_ROLLUX_TANENBAUM,
+    ],
+    [ChainId.ZKSYS_TANENBAUM]: [
+      WRAPPED_NATIVE_CURRENCY[ChainId.ZKSYS_TANENBAUM]!,
+      USDC_ZKSYS_TANENBAUM,
+      USDT_ZKSYS_TANENBAUM,
     ],
   };
 };

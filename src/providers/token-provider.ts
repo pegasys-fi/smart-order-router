@@ -54,13 +54,6 @@ export const DAI_ROLLUX = new Token(
   'DAI',
   'Dai Stablecoin'
 );
-export const PSYS_ROLLUX = new Token(
-  ChainId.ROLLUX,
-  '0x48023b16c3e81AA7F6eFFbdEB35Bb83f4f31a8fd',
-  18,
-  'PSYS',
-  'Pegasys'
-);
 
 // Some well known tokens on each chain for seeding cache / testing.
 export const USDC_ROLLUX_TANENBAUM = new Token(
@@ -84,12 +77,21 @@ export const DAI_ROLLUX_TANENBAUM = new Token(
   'DAI',
   'Dai Stablecoin'
 );
-export const PSYS_ROLLUX_TANENBAUM = new Token(
-  ChainId.ROLLUX_TANENBAUM,
-  '0x817C777DEf2Fd6ffE2492C6CD124985C78Ee9235',
-  18,
-  'PSYS',
-  'Pegasys'
+
+// Some well known tokens on each chain for seeding cache / testing.
+export const USDC_ZKSYS_TANENBAUM = new Token(
+  ChainId.ZKSYS_TANENBAUM,
+  '0xdf2d98dccf84180ceb337475fcadd0003ea14e2e',
+  6,
+  'USDC',
+  'USD//C'
+);
+export const USDT_ZKSYS_TANENBAUM = new Token(
+  ChainId.ZKSYS_TANENBAUM,
+  '0xfc25fa595ef72210d429b3f5913834df40c98cc5',
+  6,
+  'USDT',
+  'Tether USD'
 );
 
 export class TokenProvider implements ITokenProvider {
@@ -203,6 +205,8 @@ export const USDT_ON = (chainId: ChainId): Token => {
       return USDT_ROLLUX;
     case ChainId.ROLLUX_TANENBAUM:
       return USDT_ROLLUX_TANENBAUM;
+    case ChainId.ZKSYS_TANENBAUM:
+      return USDT_ZKSYS_TANENBAUM;
     default:
       throw new Error(`Chain id: ${chainId} not supported`);
   }
@@ -214,6 +218,8 @@ export const USDC_ON = (chainId: ChainId): Token => {
       return USDC_ROLLUX;
     case ChainId.ROLLUX_TANENBAUM:
       return USDC_ROLLUX_TANENBAUM;
+    case ChainId.ZKSYS_TANENBAUM:
+      return USDC_ZKSYS_TANENBAUM;
     default:
       throw new Error(`Chain id: ${chainId} not supported`);
   }

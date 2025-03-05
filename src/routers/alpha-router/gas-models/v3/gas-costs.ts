@@ -10,6 +10,7 @@ export const BASE_SWAP_COST = (id: ChainId): BigNumber => {
   switch (id) {
     case ChainId.ROLLUX:
     case ChainId.ROLLUX_TANENBAUM:
+    case ChainId.ZKSYS_TANENBAUM:
       return BigNumber.from(5000);
   }
 };
@@ -17,6 +18,7 @@ export const COST_PER_INIT_TICK = (id: ChainId): BigNumber => {
   switch (id) {
     case ChainId.ROLLUX:
     case ChainId.ROLLUX_TANENBAUM:
+    case ChainId.ZKSYS_TANENBAUM:
       return BigNumber.from(31000);
   }
 };
@@ -25,6 +27,7 @@ export const COST_PER_HOP = (id: ChainId): BigNumber => {
   switch (id) {
     case ChainId.ROLLUX:
     case ChainId.ROLLUX_TANENBAUM:
+    case ChainId.ZKSYS_TANENBAUM:
       return BigNumber.from(80000);
   }
 };

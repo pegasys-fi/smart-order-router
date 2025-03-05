@@ -6,8 +6,10 @@ import {
   DAI_ROLLUX_TANENBAUM,
   USDC_ROLLUX,
   USDC_ROLLUX_TANENBAUM,
+  USDC_ZKSYS_TANENBAUM,
   USDT_ROLLUX,
   USDT_ROLLUX_TANENBAUM,
+  USDT_ZKSYS_TANENBAUM,
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -32,6 +34,7 @@ export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
     USDC_ROLLUX_TANENBAUM,
     USDT_ROLLUX_TANENBAUM,
   ],
+  [ChainId.ZKSYS_TANENBAUM]: [USDC_ZKSYS_TANENBAUM, USDT_ZKSYS_TANENBAUM,],
 };
 
 export type L1ToL2GasCosts = {
