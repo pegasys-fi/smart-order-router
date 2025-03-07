@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { TradeType } from '@pollum-io/sdk-core';
-import { PERMIT2_ADDRESS } from '@pollum-io/universal-router-sdk';
+import { PERMIT2_ADDRESS, PERMIT2_ADDRESS_ZKSYS } from '@pollum-io/universal-router-sdk';
 import { BigNumber } from 'ethers/lib/ethers';
 
 import { SwapOptions, SwapRoute, SwapType } from '../routers';
@@ -152,7 +152,7 @@ export abstract class Simulator {
     if (swapOptions.type == SwapType.UNIVERSAL_ROUTER) {
       const permit2Allowance = await tokenContract.allowance(
         fromAddress,
-        PERMIT2_ADDRESS
+        (this.chainId == 5701) ? PERMIT2_ADDRESS_ZKSYS : PERMIT2_ADDRESS
       );
 
       // If a permit has been provided we don't need to check if UR has already been allowed.
