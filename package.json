@@ -1,6 +1,6 @@
 {
   "name": "@pollum-io/smart-order-router",
-  "version": "0.0.35",
+  "version": "0.0.37",
   "description": "Pegasys Smart Order Router",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -37,7 +37,7 @@
     "@pollum-io/router-sdk": "0.0.13",
     "@pollum-io/swap-router-contracts": "0.0.5",
     "@pollum-io/universal-router": "0.0.6",
-    "@pollum-io/universal-router-sdk": "0.0.19",
+    "@pollum-io/universal-router-sdk": "0.0.20",
     "@pollum-io/v1-sdk": "0.0.15",
     "@pollum-io/v3-sdk": "0.0.8",
     "@uniswap/permit2-sdk": "^1.2.0",

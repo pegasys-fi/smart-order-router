@@ -144,7 +144,7 @@ export class V3PoolProvider implements IV3PoolProvider {
     for (let i = 0; i < sortedPoolAddresses.length; i++) {
       const slot0Result = slot0Results[i];
       const liquidityResult = liquidityResults[i];
-      console.log(sortedPoolAddresses[i], slot0Result, liquidityResult);
+
       // These properties tell us if a pool is valid and initialized or not.
       if (
         !slot0Result?.success ||
