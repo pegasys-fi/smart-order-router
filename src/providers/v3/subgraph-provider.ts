@@ -47,6 +47,8 @@ export const printV2SubgraphPool = (s: V2SubgraphPool) =>
 const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
   [ChainId.ROLLUX]:
     'https://rollux.graph.pegasys.fi/subgraphs/name/pollum-io/pegasys-v3',
+  [ChainId.ZKSYS_TANENBAUM]:
+    'hthttps://graphnode1-test-zk.syscoin.org/subgraphs/name/pollum-io/pegasys-v3',
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.
